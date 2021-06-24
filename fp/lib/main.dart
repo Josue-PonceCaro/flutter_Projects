@@ -1,371 +1,350 @@
-// STATEFULL WIDGET ---------------------------------------------------------
-import 'dart:async';
-// import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:app2/pages/principal_page.dart';
+import 'package:app2/pages/second_page.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Material App', home: MyHome());
-  }
-}
-
-class MyHome extends StatefulWidget {
-  MyHome({Key? key}) : super(key: key);
-
-  @override
-  _MyHomeState createState() => _MyHomeState();
-}
-
-class _MyHomeState extends State<MyHome> {
-  String name = 'Ariana';
-  int a = 10;
-  double aa = 10;
-  int s = 0;
-  bool ss = false;
-  List<String> ubicaciones = [
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006',
-    '004-031-006'
-  ];
-  List<String> pallet = [
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1',
-    '200-600-1'
-  ];
-  List<String> sku = [
-    '58207109',
-    '58207109',
-    '58207109',
-    '58207109',
-    '58207109',
-    '58207109',
-    '58207109',
-    '58207109',
-    '7940513',
-    '7940513',
-    '7940513',
-    '7940513',
-    '7940513',
-    '7940513',
-    '7940513'
-  ];
-  List<String> descripcion = [
-    'MENTA DE CHOCOLET 12b x 365g x 73u',
-    'ACEITE DE MAIZ 12 x 900ml',
-    'GOLPE 6d x 600g x 24u',
-    'BOLSON PIÑATERO 12b x 426g',
-    'CHUPETE TAFI 12b x 500g x 250u',
-    'MENTA DE CHOCOLET 12b x 365g x 73u',
-    'ACEITE DE MAIZ 12 x 900ml',
-    'GOLPE 6d x 600g x 24u',
-    'BOLSON PIÑATERO 12b x 426g',
-    'CHUPETE TAFI 12b x 500g x 250u',
-    'MENTA DE CHOCOLET 12b x 365g x 73u',
-    'ACEITE DE MAIZ 12 x 900ml',
-    'GOLPE 6d x 600g x 24u',
-    'BOLSON PIÑATERO 12b x 426g',
-    'CHUPETE TAFI 12b x 500g x 250u'
-  ];
-  List<String> fv = [
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021',
-    '17-04-2021'
-  ];
-  List<String> cajas = [
-    '10',
-    '11',
-    '12',
-    '4',
-    '3',
-    '12',
-    '9',
-    '15',
-    '1',
-    '11',
-    '0',
-    '15',
-    '10',
-    '5',
-    '10'
-  ];
-  List<String> unidades = [
-    '3',
-    '0',
-    '0',
-    '5',
-    '7',
-    '0',
-    '0',
-    '11',
-    '2',
-    '0',
-    '13',
-    '0',
-    '1',
-    '0',
-    '0'
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.perm_contact_cal_rounded),
-        title: Text("Inventario Rastreros"),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(border: Border.all(width: 3)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  IconButton(
-                    onPressed: _homebtn,
-                    icon: Icon(Icons.home),
-                    iconSize: 80,
-                  ),
-                  IconButton(
-                    onPressed: _historybtn,
-                    icon: Icon(Icons.history),
-                    iconSize: 80,
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              name,
-              style: TextStyle(
-                  fontSize: aa, color: Color.fromARGB(200, a, a + 99, a + 99)),
-            ),
-            LinearProgressIndicator(
-              value: aa / 220,
-              color: Color.fromARGB(200, a + 99, a, a + 99),
-            ),
-            Switch(
-                value: ss,
-                onChanged: (value) {
-                  setState(() {
-                    this.ss = value;
-                  });
-                },
-                activeColor: Color.fromARGB(200, 200, 100, 230)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: ubicaciones.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final ubicacion = ubicaciones[index];
-                  return ListTile(
-                    title: Text(ubicacion),
-                    leading: Icon(Icons.person),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: (Icon(
-          Icons.adb,
-        )),
-        onPressed: changeSize,
-      ),
+    return MaterialApp(
+      title: 'Material App',
+      initialRoute: '/',
+      routes: {
+        '/': (BuildContext context) => MyHome(),
+        '/second': (BuildContext context) => SecPage(),
+      },
     );
   }
-
-  void changeSize() {
-    setState(() {
-      if (s == 0) {
-        a = a + 10;
-        aa = aa + 10;
-        if (a > 150) {
-          s = 1;
-        }
-      } else if (s == 1) {
-        a = a - 10;
-        aa = aa - 10;
-        if (a < 20) {
-          s = 0;
-        }
-      }
-
-      // if (name == 'Mark') {
-      //   name = 'Odin';
-      // } else {
-      //   name = 'Mark';
-      // }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 10), (value) {
-      changeSize();
-    });
-  }
-
-  void _homebtn() {
-    print("HOME PAGE BTN");
-  }
-
-  void _historybtn() {
-    print("HISTORY BTN");
-  }
 }
 
-//----------------------------------------------------------------------------------------
+// // // STATEFULL WIDGET ---------------------------------------------------------
+// import 'dart:async';
+// // import 'dart:html';
 // import 'package:flutter/material.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
+// void main() => runApp(MyApp());
 
 // class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         // This is the theme of your application.
-//         //
-//         // Try running your application with "flutter run". You'll see the
-//         // application has a blue toolbar. Then, without quitting the app, try
-//         // changing the primarySwatch below to Colors.green and then invoke
-//         // "hot reload" (press "r" in the console where you ran "flutter run",
-//         // or simply save your changes to "hot reload" in a Flutter IDE).
-//         // Notice that the counter didn't reset back to zero; the application
-//         // is not restarted.
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: MyHomePage(title: 'Flutter Demo Homesdd Page'),
-//     );
+//     return MaterialApp(title: 'Material App', home: MyHome());
 //   }
 // }
 
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key? key, required this.title}) : super(key: key);
-
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
-
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
-
-//   final String title;
+// class MyHome extends StatefulWidget {
+//   MyHome({Key? key}) : super(key: key);
 
 //   @override
-//   _MyHomePageState createState() => _MyHomePageState();
+//   _MyHomeState createState() => _MyHomeState();
 // }
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       // This call to setState tells the Flutter framework that something has
-//       // changed in this State, which causes it to rerun the build method below
-//       // so that the display can reflect the updated values. If we changed
-//       // _counter without calling setState(), then the build method would not be
-//       // called again, and so nothing would appear to happen.
-//       _counter++;
-//     });
-//   }
-
+// class _MyHomeState extends State<MyHome> {
+//   String name = 'Ariana';
+//   int a = 10;
+//   double aa = 10;
+//   int s = 0;
+//   bool ss = false;
+//   double hs = 40;
+//   double hx = 20;
+//   List<String> ubicaciones = [
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006',
+//     '004-031-006'
+//   ];
+//   List<String> pallets = [
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1',
+//     '200-600-1'
+//   ];
+//   List<String> skus = [
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '58207109',
+//     '7940513',
+//     '7940513',
+//     '7940513',
+//     '7940513',
+//     '7940513',
+//     '7940513',
+//     '7940513'
+//   ];
+//   List<String> descripcions = [
+//     'MENTA DE CHOCOLET 12b x 365g x 73u',
+//     'ACEITE DE MAIZ 12 x 900ml',
+//     'GOLPE 6d x 600g x 24u',
+//     'BOLSON PIÑATERO 12b x 426g',
+//     'CHUPETE TAFI 12b x 500g x 250u',
+//     'MENTA DE CHOCOLET 12b x 365g x 73u',
+//     'ACEITE DE MAIZ 12 x 900ml',
+//     'GOLPE 6d x 600g x 24u',
+//     'BOLSON PIÑATERO 12b x 426g',
+//     'CHUPETE TAFI 12b x 500g x 250u',
+//     'MENTA DE CHOCOLET 12b x 365g x 73u',
+//     'ACEITE DE MAIZ 12 x 900ml',
+//     'GOLPE 6d x 600g x 24u',
+//     'BOLSON PIÑATERO 12b x 426g',
+//     'CHUPETE TAFI 12b x 500g x 250u'
+//   ];
+//   List<String> fvs = [
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021',
+//     '17-04-2021'
+//   ];
+//   List<String> cajas = [
+//     '10',
+//     '11',
+//     '12',
+//     '4',
+//     '3',
+//     '12',
+//     '9',
+//     '15',
+//     '1',
+//     '11',
+//     '0',
+//     '15',
+//     '10',
+//     '5',
+//     '10'
+//   ];
+//   List<String> unidades = [
+//     '3',
+//     '0',
+//     '0',
+//     '5',
+//     '7',
+//     '0',
+//     '0',
+//     '11',
+//     '2',
+//     '0',
+//     '13',
+//     '0',
+//     '1',
+//     '0',
+//     '0'
+//   ];
 //   @override
 //   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
 //     return Scaffold(
 //       appBar: AppBar(
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text(widget.title),
+//         leading: Icon(Icons.perm_contact_cal_rounded),
+//         title: Text("Inventario Rastreros"),
 //       ),
 //       body: Center(
-//         // Center is a layout widget. It takes a single child and positions it
-//         // in the middle of the parent.
 //         child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'You have pushed the button this many times:',
+//           children: [
+//             Container(
+//               // decoration: BoxDecoration(border: Border.all(width: 1)),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                 // crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: <Widget>[
+//                   IconButton(
+//                     // color: Colors.red,
+//                     onPressed: _homebtn,
+//                     icon: Icon(Icons.home),
+//                     iconSize: 50,
+//                   ),
+//                   IconButton(
+//                     onPressed: _historybtn,
+//                     icon: Icon(Icons.history),
+//                     iconSize: 50,
+//                   ),
+//                 ],
+//               ),
 //             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
+//             // LinearProgressIndicator(
+//             //   value: aa / 220,
+//             //   color: Color.fromARGB(200, a + 99, a, a + 99),
+//             // ),
+//             Container(
+//               decoration: BoxDecoration(border: Border.all(width: 1)),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: <Widget>[
+//                   Container(
+//                     margin: EdgeInsets.all(20),
+//                     height: hx,
+//                     // color: Colors.red,
+//                     child: Icon(Icons.widgets_outlined),
+//                   ),
+//                   // Icon(Icons.ballot_rounded),
+//                   Container(
+//                     height: hx,
+//                     child: Text('ubicacion',
+//                         style: (TextStyle(
+//                             fontSize: 15,
+//                             color: Colors.black87,
+//                             fontWeight: FontWeight.w800))),
+//                   ),
+//                   Container(
+//                     height: hx,
+//                     child: Text('pallet',
+//                         style: (TextStyle(
+//                             fontSize: 15,
+//                             color: Colors.black87,
+//                             fontWeight: FontWeight.w800))),
+//                   ),
+//                   Container(
+//                     margin: EdgeInsets.all(20),
+//                     height: hx,
+//                     child: Text('sku',
+//                         style: (TextStyle(
+//                             fontSize: 15,
+//                             color: Colors.black87,
+//                             fontWeight: FontWeight.w800))),
+//                   ),
+//                   // Text(descripcion),
+//                   // Text(fv),
+//                   // Text(caja),
+//                   // Text(pallet),
+//                 ],
+//               ),
 //             ),
+//             Expanded(
+//               child: ListView.builder(
+//                 itemCount: ubicaciones.length,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   final ubicacion = ubicaciones[index];
+//                   final pallet = pallets[index];
+//                   final sku = skus[index];
+//                   final descripcion = descripcions[index];
+//                   final fv = fvs[index];
+//                   final caja = cajas[index];
+//                   final unidad = unidades[index];
+//                   return GestureDetector(
+//                     onTap: () {
+//                       print('object');
+//                     },
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: <Widget>[
+//                         Container(
+//                           margin: EdgeInsets.all(20),
+//                           height: hs,
+//                           // color: Colors.red,
+//                           child: Icon(
+//                             Icons.widgets_rounded,
+//                             size: 20,
+//                           ),
+//                         ),
+//                         Container(
+//                           height: hs,
+//                           child: Text(ubicacion,
+//                               style: (TextStyle(
+//                                   fontSize: 15,
+//                                   color: Colors.black87,
+//                                   fontWeight: FontWeight.w400))),
+//                         ),
+//                         Container(
+//                           height: hs,
+//                           child: Text(pallet,
+//                               style: (TextStyle(
+//                                   fontSize: 15,
+//                                   color: Colors.black87,
+//                                   fontWeight: FontWeight.w400))),
+//                         ),
+//                         Container(
+//                           margin: EdgeInsets.all(20),
+//                           height: hs,
+//                           child: Text(sku,
+//                               style: (TextStyle(
+//                                   fontSize: 15,
+//                                   color: Colors.black87,
+//                                   fontWeight: FontWeight.w400))),
+//                         ),
+//                       ],
+//                     ),
+//                   );
+//                 },
+//               ),
+//             )
 //           ],
 //         ),
 //       ),
 //       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
+//         child: (Icon(
+//           Icons.adb,
+//         )),
+//         onPressed: changeSize,
+//       ),
 //     );
+//   }
+
+//   void changeSize() {
+//     setState(() {
+//       if (s == 0) {
+//         a = a + 10;
+//         aa = aa + 10;
+//         if (a > 150) {
+//           s = 1;
+//         }
+//       } else if (s == 1) {
+//         a = a - 10;
+//         aa = aa - 10;
+//         if (a < 20) {
+//           s = 0;
+//         }
+//       }
+//     });
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     Timer.periodic(Duration(milliseconds: 100), (value) {
+//       changeSize();
+//     });
+//   }
+
+//   void _homebtn() {
+//     print("HOME PAGE BTN");
+//   }
+
+//   void _historybtn() {
+//     print("HISTORY BTN");
 //   }
 // }
