@@ -1,8 +1,10 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'pages/page_1.dart';
 import 'pages/page_2.dart';
 import 'pages/page_3.dart';
 import 'pages/page_4.dart';
+import 'pages/page_5.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Page0 extends StatelessWidget {
-  const Page0({Key? key}) : super(key: key);
+  // const Page0({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class Page0 extends StatelessWidget {
         '/pg2': (context) => Page2(),
         '/pg3': (context) => Page3(),
         '/pg4': (context) => Page4(),
+        '/pg5': (context) => Page5(),
       },
     );
   }

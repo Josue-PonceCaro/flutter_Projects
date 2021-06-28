@@ -7,15 +7,24 @@ class Page4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Material App Bar'),
+        title: Text('Inventario Rastrero'),
       ),
       body: GestureDetector(
         onTap: () {
           print('object');
         },
         child: Center(
-          child: Container(
-            child: Text('Hello World'),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 70,
+              ),
+              Text('Qaira is working in this app'),
+              SizedBox(
+                height: 40,
+              ),
+              Text('VALIDATION HISTORY'),
+            ],
           ),
         ),
       ),

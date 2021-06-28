@@ -135,35 +135,63 @@ class Page1 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // leading: Icon(Icons.perm_contact_cal_rounded),
-        title: Text("Inventario Rastreros"),
+        title: Text(
+          '''Inventario
+    Rastrero''',
+          style: TextStyle(fontSize: 16),
+        ),
+
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              print('qaira');
+            },
+            child: Image.asset(
+              'assets/Qaira.png',
+              scale: 5,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('ransa');
+            },
+            child: Image.asset(
+              'assets/Ransa.png',
+              scale: 4,
+            ),
+          ),
+        ],
+        elevation: 20,
       ),
       body: Center(
         child: Column(
           children: [
-            Container(
-              // decoration: BoxDecoration(border: Border.all(width: 1)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  IconButton(
-                    // color: Colors.red,
-                    onPressed: _homebtn,
-                    icon: Icon(Icons.home),
-                    iconSize: 50,
-                  ),
-                  IconButton(
-                    onPressed: _historybtn,
-                    icon: Icon(Icons.history),
-                    iconSize: 50,
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   // decoration: BoxDecoration(border: Border.all(width: 1)),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     // crossAxisAlignment: CrossAxisAlignment.stretch,
+            //     children: <Widget>[
+            //       IconButton(
+            //         // color: Colors.red,
+            //         onPressed: _homebtn,
+            //         icon: Icon(Icons.home),
+            //         iconSize: 50,
+            //       ),
+            //       IconButton(
+            //         onPressed: _historybtn,
+            //         icon: Icon(Icons.history),
+            //         iconSize: 50,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
             // LinearProgressIndicator(
             //   value: aa / 220,
             //   color: Color.fromARGB(200, a + 99, a, a + 99),
             // ),
+
             Container(
               decoration: BoxDecoration(border: Border.all(width: 1)),
               child: Row(
@@ -272,18 +300,12 @@ class Page1 extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: (Icon(
-          Icons.adb,
+          Icons.history_toggle_off_rounded,
         )),
-        onPressed: _homebtn,
+        onPressed: () {
+          Navigator.of(context).pushNamed('/pg4');
+        },
       ),
     );
-  }
-
-  void _homebtn() {
-    print("HOME PAGE BTN");
-  }
-
-  void _historybtn() {
-    print("HISTORY BTN");
   }
 }
