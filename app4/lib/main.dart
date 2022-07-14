@@ -1,9 +1,11 @@
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/screens/login_screen.dart';
+import 'package:app4/services/services.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app4/screens/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 // F2 << To replace a word for other
 // Install Pubspec Assist << To make fastes installatios
@@ -16,6 +18,8 @@ void main() {
       BlocProvider(create: ((context) => GpsBloc())),
       BlocProvider(create: ((context) => LocationBloc())),
       BlocProvider(create: ((context) => MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
+      
+      
     ], 
     child: const MapsApp())
   );

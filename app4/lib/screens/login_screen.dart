@@ -1,8 +1,11 @@
+import 'package:app4/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
 import 'package:app4/ui/ui.dart';
 import 'package:app4/widgets/widgets.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String pageRoute = 'Login';
@@ -10,11 +13,15 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
+
     return Scaffold(
       body: Stack(children: [
         AuthBackground(
             child: SingleChildScrollView(
-          child: Column(
+          child: ChangeNotifierProvider(
+                    create: (buildContext) => LoginFormProvider(),
+                    child: Column(
             children: [
               const SizedBox(
                 height: 250,
@@ -34,6 +41,7 @@ class LoginScreen extends StatelessWidget {
                     height: 30,
                   ),
                   _LoginForm(),
+                  
                   const SizedBox(
                     height: 30,
                   )
@@ -42,8 +50,8 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              TextButton(
-                onPressed: () {
+              Consumer<LoginFormProvider>(builder: (context,loginForm, _ ) => TextButton(
+                onPressed: loginForm.isLoading ? null : () {
                   Navigator.pushReplacementNamed(
                       context, RegisterScreen.pageRoute);
                 },
@@ -54,15 +62,19 @@ class LoginScreen extends StatelessWidget {
                   'Crear cuenta nueva ',
                   style: TextStyle(fontSize: 18, color: Colors.black87),
                 ),
-              ),
+              )),
+              
+
               const SizedBox(
                 height: 100,
               )
             ],
           ),
-        )),
+       
+                  ),
+          
+           )),
       ]),
-     
     );
   }
 }
@@ -70,13 +82,17 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final loginFomr = Provider.of<LoginFormProvider>(context);
     return Container(
       child: Form(
         // TODO: Mantener la referencia al KEY
+        key: loginFomr.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
             TextFormField(
+              onChanged: (value) => loginFomr.userEmail = value,
+              readOnly: loginFomr.isLoading ? true : false,
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               style: const TextStyle(color: Colors.deepPurple),
@@ -85,14 +101,18 @@ class _LoginForm extends StatelessWidget {
                   labelText: 'Correo electrónico',
                   prefixIcon: Icons.alternate_email_outlined),
               validator: (value) {
-                return InternalValidations.emailValidator(value) ? null : 'Correo inválido';
+                return InternalValidations.emailValidator(value)
+                    ? null
+                    : 'Correo inválido';
               },
             ),
             const SizedBox(
               height: 30,
             ),
             TextFormField(
+              onChanged: (value) => loginFomr.userPassWord = value,
               autocorrect: false,
+              readOnly: loginFomr.isLoading ? true : false,
               keyboardType: TextInputType.emailAddress,
               obscureText: true,
               style: const TextStyle(color: Colors.deepPurple),
@@ -101,11 +121,13 @@ class _LoginForm extends StatelessWidget {
                   hintText: '••••••••',
                   prefixIcon: Icons.password_sharp),
               validator: (value) {
-                return InternalValidations.passwordValidator(value) ? null : 'Extensión incorrecta';
+                return InternalValidations.passwordValidator(value)
+                    ? null
+                    : 'Extensión incorrecta';
               },
             ),
             TextButton(
-              onPressed: () {
+              onPressed: loginFomr.isLoading ? null : () {
                 Navigator.pushReplacementNamed(
                     context, RestorePasswordScreen.pageRoute);
               },
@@ -121,9 +143,20 @@ class _LoginForm extends StatelessWidget {
               height: 30,
             ),
             MaterialButton(
-              onPressed: () {
-                // Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
-              },
+              onPressed: loginFomr.isLoading
+                  ? null
+                  : () async {
+                      //
+                      FocusScope.of(context)
+                          .unfocus(); // Para quitar el teclado
+                      if (!loginFomr.isValid()) return;
+                      loginFomr.isLoading = true;
+                      // TODO: validad si el login es correcto
+                      await Future.delayed(Duration(seconds: 5));
+                      // loginFomr.isLoading = false;
+                      Navigator.pushReplacementNamed(
+                          context, LoadingScreen.pageRoute);
+                    },
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.deepPurple,
@@ -132,9 +165,9 @@ class _LoginForm extends StatelessWidget {
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: const Text(
-                  'Ingresar',
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  loginFomr.isLoading ? 'Espere' : 'Ingresar',
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             )
