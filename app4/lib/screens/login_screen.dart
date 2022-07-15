@@ -1,10 +1,10 @@
 import 'package:app4/providers/providers.dart';
+import 'package:app4/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
 import 'package:app4/ui/ui.dart';
 import 'package:app4/widgets/widgets.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,67 +13,64 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
-
     return Scaffold(
       body: Stack(children: [
         AuthBackground(
             child: SingleChildScrollView(
           child: ChangeNotifierProvider(
-                    create: (buildContext) => LoginFormProvider(),
-                    child: Column(
-            children: [
-              const SizedBox(
-                height: 250,
-              ),
-              CardContainer(
-                  child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Iniciar sesión',
-                    style: TextStyle(color: Colors.black54, fontSize: 40),
-                    //style: Theme.of(context).textTheme.headline4,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  _LoginForm(),
-                  
-                  const SizedBox(
-                    height: 30,
-                  )
-                ],
-              )),
-              const SizedBox(
-                height: 50,
-              ),
-              Consumer<LoginFormProvider>(builder: (context,loginForm, _ ) => TextButton(
-                onPressed: loginForm.isLoading ? null : () {
-                  Navigator.pushReplacementNamed(
-                      context, RegisterScreen.pageRoute);
-                },
-                style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(
-                        Colors.indigo.withOpacity(0.1))),
-                child: const Text(
-                  'Crear cuenta nueva ',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+            create: (buildContext) => LoginFormProvider(),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 250,
                 ),
-              )),
-              
-
-              const SizedBox(
-                height: 100,
-              )
-            ],
+                CardContainer(
+                    child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Iniciar sesión',
+                      style: TextStyle(color: Colors.black54, fontSize: 40),
+                      //style: Theme.of(context).textTheme.headline4,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    _LoginForm(),
+                    const SizedBox(
+                      height: 30,
+                    )
+                  ],
+                )),
+                const SizedBox(
+                  height: 50,
+                ),
+                Consumer<LoginFormProvider>(
+                    builder: (context, loginForm, _) => TextButton(
+                          onPressed: loginForm.isLoading
+                              ? null
+                              : () {
+                                  Navigator.pushReplacementNamed(
+                                      context, RegisterScreen.pageRoute);
+                                },
+                          style: ButtonStyle(
+                              overlayColor: MaterialStateProperty.all(
+                                  Colors.indigo.withOpacity(0.1))),
+                          child: const Text(
+                            'Crear cuenta nueva ',
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.black87),
+                          ),
+                        )),
+                const SizedBox(
+                  height: 100,
+                )
+              ],
+            ),
           ),
-       
-                  ),
-          
-           )),
+        )),
       ]),
     );
   }
@@ -127,10 +124,12 @@ class _LoginForm extends StatelessWidget {
               },
             ),
             TextButton(
-              onPressed: loginFomr.isLoading ? null : () {
-                Navigator.pushReplacementNamed(
-                    context, RestorePasswordScreen.pageRoute);
-              },
+              onPressed: loginFomr.isLoading
+                  ? null
+                  : () {
+                      Navigator.pushReplacementNamed(
+                          context, RestorePasswordScreen.pageRoute);
+                    },
               style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(
                       Colors.indigo.withOpacity(0.1))),
@@ -149,13 +148,20 @@ class _LoginForm extends StatelessWidget {
                       //
                       FocusScope.of(context)
                           .unfocus(); // Para quitar el teclado
+                      final loginService =
+                          Provider.of<LoginService>(context, listen: false);
+                      // Se pone listen en false porque NO SE PUEDE ESCUCHAR DENTRO DE UN METODO
+                      // Solo se puede escuchar dentro del build
                       if (!loginFomr.isValid()) return;
                       loginFomr.isLoading = true;
                       // TODO: validad si el login es correcto
+                      // final String token = await loginService.loginUser(
+                      //     loginFomr.userEmail, loginFomr.userPassWord);
                       await Future.delayed(Duration(seconds: 5));
-                      // loginFomr.isLoading = false;
-                      Navigator.pushReplacementNamed(
-                          context, LoadingScreen.pageRoute);
+
+                      loginFomr.isLoading = false;
+                      // Navigator.pushReplacementNamed(
+                      //     context, LoadingScreen.pageRoute);
                     },
               disabledColor: Colors.grey,
               elevation: 0,

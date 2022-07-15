@@ -30,20 +30,26 @@ class MapsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Maps App',
-      initialRoute: LoginScreen.pageRoute,
-      routes: {
-
-        LoadingScreen.pageRoute:(context) => const LoadingScreen(),
-        LoginScreen.pageRoute:(context) => const LoginScreen(),
-        RegisterScreen.pageRoute:(context) => const RegisterScreen(),
-        RestorePasswordScreen.pageRoute:(context) => const RestorePasswordScreen(),
-
-
-
-      },
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: ( _ ) => AuthService()),
+        ChangeNotifierProvider(create: ( _ ) => LoginService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Maps App',
+        initialRoute: LoginScreen.pageRoute,
+        routes: {
+    
+          LoadingScreen.pageRoute:(context) => const LoadingScreen(),
+          LoginScreen.pageRoute:(context) => const LoginScreen(),
+          RegisterScreen.pageRoute:(context) => const RegisterScreen(),
+          RestorePasswordScreen.pageRoute:(context) => const RestorePasswordScreen(),
+    
+    
+    
+        },
+      ),
     );
   }
 }

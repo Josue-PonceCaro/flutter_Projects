@@ -1,3 +1,5 @@
+import 'package:app4/providers/providers.dart';
+import 'package:app4/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app4/screens/screens.dart';
@@ -5,6 +7,7 @@ import 'package:app4/screens/login_screen.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
 import 'package:app4/ui/input_decorations.dart';
 import 'package:app4/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const String pageRoute = 'Register';
@@ -16,6 +19,8 @@ class RegisterScreen extends StatelessWidget {
       body: Stack(children: [
         AuthBackground(
             child: SingleChildScrollView(
+                child: ChangeNotifierProvider(
+          create: (buildeContext) => RegisterFormProvider(),
           child: Column(
             children: [
               const SizedBox(
@@ -44,17 +49,21 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, LoginScreen.pageRoute);
-                },
-                style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(
-                        Colors.indigo.withOpacity(0.1))),
-                child: const Text(
-                  'Ya tiene cuenta?',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+              Consumer<RegisterFormProvider>(
+                builder: (context, registerForm, _) => TextButton(
+                  onPressed: registerForm.isLoading
+                      ? null
+                      : () {
+                          Navigator.pushReplacementNamed(
+                              context, LoginScreen.pageRoute);
+                        },
+                  style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.indigo.withOpacity(0.1))),
+                  child: const Text(
+                    'Ya tiene cuenta?',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -62,9 +71,8 @@ class RegisterScreen extends StatelessWidget {
               )
             ],
           ),
-        )),
+        ))),
       ]),
-      
     );
   }
 }
@@ -72,13 +80,17 @@ class RegisterScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final registerForm = Provider.of<RegisterFormProvider>(context);
     return Container(
       child: Form(
+        key: registerForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         // TODO: Mantener la referencia al KEY
         child: Column(
           children: [
             TextFormField(
+              onChanged: (value) => registerForm.userName = value,
+              readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               keyboardType: TextInputType.name,
               style: const TextStyle(color: Colors.deepPurple),
@@ -96,6 +108,8 @@ class _LoginForm extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
+              onChanged: (value) => registerForm.phoneNumber = value,
+              readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.phone,
@@ -110,11 +124,12 @@ class _LoginForm extends StatelessWidget {
                     : 'número incorrecto';
               },
             ),
-
             const SizedBox(
               height: 30,
             ),
             TextFormField(
+              onChanged: (value) => registerForm.userEmail = value,
+              readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               style: const TextStyle(color: Colors.deepPurple),
@@ -123,13 +138,17 @@ class _LoginForm extends StatelessWidget {
                   hintText: 'enamil@ext.com',
                   prefixIcon: Icons.alternate_email_outlined),
               validator: (value) {
-                return InternalValidations.emailValidator(value) ? null : 'Correo inválido';
+                return InternalValidations.emailValidator(value)
+                    ? null
+                    : 'Correo inválido';
               },
             ),
             const SizedBox(
               height: 30,
             ),
             TextFormField(
+              onChanged: (value) => registerForm.userPassWord = value,
+              readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               keyboardType: TextInputType.visiblePassword,
               obscureText: true,
@@ -139,16 +158,34 @@ class _LoginForm extends StatelessWidget {
                   hintText: '••••••••',
                   prefixIcon: Icons.password_sharp),
               validator: (value) {
-                return InternalValidations.passwordValidator(value) ? null : 'Extensión incorrecta';
+                return InternalValidations.passwordValidator(value)
+                    ? null
+                    : 'Extensión incorrecta';
               },
             ),
             const SizedBox(
               height: 30,
             ),
             MaterialButton(
-              onPressed: () {
-                // Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
-              },
+              onPressed: registerForm.isLoading
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      if (!registerForm.isValid()) return;
+                      registerForm.isLoading = true;
+                      final registerService = Provider.of<AuthService>(context, listen: false);
+                      // final String token = await registerService.createUser(
+                      //     registerForm.userEmail,
+                      //     registerForm.userPassWord,
+                      //     registerForm.userName,
+                      //     registerForm.phoneNumber,
+                      //     registerForm.userBirthday,
+                      //     registerForm.gender);
+                      await Future.delayed(Duration(seconds: 5));
+                      registerForm.isLoading = false;
+                      // Navigator.pushReplacementNamed(
+                      //     context, LoadingScreen.pageRoute);
+                    },
               disabledColor: Colors.grey,
               elevation: 0,
               color: Colors.deepPurple,
