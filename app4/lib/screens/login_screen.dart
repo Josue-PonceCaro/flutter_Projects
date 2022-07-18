@@ -1,5 +1,6 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
@@ -148,15 +149,27 @@ class _LoginForm extends StatelessWidget {
                       //
                       FocusScope.of(context)
                           .unfocus(); // Para quitar el teclado
-                      final loginService =
-                          Provider.of<LoginService>(context, listen: false);
                       // Se pone listen en false porque NO SE PUEDE ESCUCHAR DENTRO DE UN METODO
                       // Solo se puede escuchar dentro del build
                       if (!loginFomr.isValid()) return;
                       loginFomr.isLoading = true;
                       // TODO: validad si el login es correcto
-                      // final String token = await loginService.loginUser(
-                      //     loginFomr.userEmail, loginFomr.userPassWord);
+
+                      // UserCredential user = await FirebaseAuth.instance
+                      //     .signInWithEmailAndPassword(
+                      //         email: loginFomr.userEmail,
+                      //         password: loginFomr.userPassWord);
+                      // print(user);
+                      // print(user.user?.uid);
+
+                      final authService =
+                          Provider.of<AuthService>(context, listen: false);
+                      final String token = await authService.loginUser(
+                          loginFomr.userEmail, loginFomr.userPassWord);
+
+                      await Future.delayed(Duration(seconds: 2));
+                      final String dataLook =
+                          await authService.lookUpUser(token);
                       await Future.delayed(Duration(seconds: 5));
 
                       loginFomr.isLoading = false;
