@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 // Ctrk + Mayus + p and click Pubspec Assist: Add/update dependencies << To add  new dependencies
 // bloc, flutter_bloc, equatable << Write an enter to intall those three dependencies 
 // then install the bloc extension
+//This is comment from mac
 void main() {
   runApp(
     MultiBlocProvider(providers: [
