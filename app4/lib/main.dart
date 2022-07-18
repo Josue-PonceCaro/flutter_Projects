@@ -14,20 +14,20 @@ import 'package:provider/provider.dart';
 // bloc, flutter_bloc, equatable << Write an enter to intall those three dependencies
 // then install the bloc extension
 // Adding changes from Mac
-<<<<<<< HEAD
+// <<<<<<< HEAD
 //This is comment from mac
-void main() {
-  runApp(
-    MultiBlocProvider(providers: [
-      BlocProvider(create: ((context) => GpsBloc())),
-      BlocProvider(create: ((context) => LocationBloc())),
-      BlocProvider(create: ((context) => MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
+// void main() {
+//   runApp(
+//     MultiBlocProvider(providers: [
+//       BlocProvider(create: ((context) => GpsBloc())),
+//       BlocProvider(create: ((context) => LocationBloc())),
+//       BlocProvider(create: ((context) => MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
       
       
-    ], 
-    child: const MapsApp())
-  );
-=======
+//     ], 
+//     child: const MapsApp())
+//   );
+// =======
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -38,7 +38,7 @@ void main() async {
         create: ((context) =>
             MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
   ], child: const MapsApp()));
->>>>>>> b0996bf0fb7791531c27a7487641ba7bbd2c9326
+// >>>>>>> b0996bf0fb7791531c27a7487641ba7bbd2c9326
 }
 
 class MapsApp extends StatelessWidget {
