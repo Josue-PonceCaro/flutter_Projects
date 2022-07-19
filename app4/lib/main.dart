@@ -1,7 +1,6 @@
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/screens/login_screen.dart';
 import 'package:app4/services/services.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app4/screens/screens.dart';
@@ -29,8 +28,8 @@ import 'package:provider/provider.dart';
 //   );
 // =======
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: ((context) => GpsBloc())),
     BlocProvider(create: ((context) => LocationBloc())),

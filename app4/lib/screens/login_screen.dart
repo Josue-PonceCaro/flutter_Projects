@@ -1,6 +1,5 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
@@ -169,12 +168,12 @@ class _LoginForm extends StatelessWidget {
 
                       await Future.delayed(Duration(seconds: 2));
                       final String dataLook =
-                          await authService.lookUpUser(token);
-                      await Future.delayed(Duration(seconds: 5));
-
+                          await authService.lookUpUser2(token);
+                      await Future.delayed(Duration(seconds: 2));
+                      
                       loginFomr.isLoading = false;
-                      // Navigator.pushReplacementNamed(
-                      //     context, LoadingScreen.pageRoute);
+
+                      // if(token != '') Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
                     },
               disabledColor: Colors.grey,
               elevation: 0,

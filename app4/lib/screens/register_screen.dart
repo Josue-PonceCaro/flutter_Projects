@@ -1,6 +1,5 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app4/screens/screens.dart';
@@ -174,21 +173,15 @@ class _LoginForm extends StatelessWidget {
                       FocusScope.of(context).unfocus();
                       if (!registerForm.isValid()) return;
                       registerForm.isLoading = true;
-                      // final registerService = Provider.of<AuthService>(context, listen: false);
-                      // final String token = await registerService.createUser(
-                      //     registerForm.userEmail,
-                      //     registerForm.userPassWord,
-                      //     registerForm.userName,
-                      //     registerForm.phoneNumber,
-                      //     registerForm.userBirthday,
-                      //     registerForm.gender);
-                      UserCredential user = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: registerForm.userEmail,
-                              password: registerForm.userPassWord);
-                      print(user.user);
-                      print(user.user?.uid);
-
+                      final registerService = Provider.of<AuthService>(context, listen: false);
+                      final String token = await registerService.createUser(
+                          registerForm.userEmail,
+                          registerForm.userPassWord,
+                          registerForm.userName,
+                          registerForm.phoneNumber,
+                          registerForm.userBirthday,
+                          registerForm.gender);
+                      print(token);
                       await Future.delayed(Duration(seconds: 5));
                       registerForm.isLoading = false;
                       // Navigator.pushReplacementNamed(
