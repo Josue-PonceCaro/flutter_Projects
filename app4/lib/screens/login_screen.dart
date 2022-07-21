@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(children: [
         AuthBackground(
-            child: SingleChildScrollView(
+        child: SingleChildScrollView(
           child: ChangeNotifierProvider(
             create: (buildContext) => LoginFormProvider(),
             child: Column(
@@ -166,11 +166,34 @@ class _LoginForm extends StatelessWidget {
                       final String token = await authService.loginUser(
                           loginFomr.userEmail, loginFomr.userPassWord);
 
-                      await Future.delayed(Duration(seconds: 2));
-                      final String dataLook =
-                          await authService.lookUpUser2(token);
-                      await Future.delayed(Duration(seconds: 2));
+                      await Future.delayed(Duration(seconds: 3));
+                      // GET TESTING ----------
+                      // final String dataLook = await authService.lookUpUser(token);
+                      final String? email_verified = await authService.emailVerified(token);
+                      // await Future.delayed(Duration(seconds: 5));
+                      // PUT TESTING ---------
+                      // final String? changing_user_data = await authService.changeUserData(
+                      //   loginFomr.userEmail, 
+                      //   'pablo',
+                      //   '912123456', 
+                      //   '04-12-1990', 
+                      //   'masculino', 
+                      //   token
+                      //   );
+                      await Future.delayed(Duration(seconds: 5));
+                      final String? verify_email = await authService.verifyEmail(token);
+                      await Future.delayed(Duration(seconds: 5));
+                      final String? change_password = await authService.changePassword(token, '654321');
+                      await Future.delayed(Duration(seconds: 5));
+                      // final String? resetPassword = await authService.resetPassword('j.ponce@qairadrones.com');
+
+
                       
+
+
+
+
+
                       loginFomr.isLoading = false;
 
                       // if(token != '') Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);

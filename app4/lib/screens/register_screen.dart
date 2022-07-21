@@ -173,19 +173,39 @@ class _LoginForm extends StatelessWidget {
                       FocusScope.of(context).unfocus();
                       if (!registerForm.isValid()) return;
                       registerForm.isLoading = true;
-                      final registerService = Provider.of<AuthService>(context, listen: false);
-                      final String token = await registerService.createUser(
+                      final authService = Provider.of<AuthService>(context, listen: false);
+                      final String? errorMsg = await authService.createUser(
                           registerForm.userEmail,
                           registerForm.userPassWord,
                           registerForm.userName,
                           registerForm.phoneNumber,
                           registerForm.userBirthday,
                           registerForm.gender);
-                      print(token);
-                      await Future.delayed(Duration(seconds: 5));
+                      
+                      await Future.delayed(Duration(seconds: 2));
+
+                      if(errorMsg == null) {
+                        // Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
+                      }
+                      else{
+                        print(errorMsg);
+                      }
+                      
+                      // await Future.delayed(Duration(seconds: 2));
+                      // final String token = await authService.loginUser(
+                      //     registerForm.userEmail, registerForm.userPassWord);
+                      // await Future.delayed(Duration(seconds: 5));
+                      // // PUT TESTING ---------
+                      // final String? changing_user_data = await authService.changeUserData(
+                      //   registerForm.userEmail, 
+                      //   registerForm.userName,
+                      //   registerForm.phoneNumber, 
+                      //   '04-12-1990', 
+                      //   'masculino', 
+                      //   token
+                      //   );
+
                       registerForm.isLoading = false;
-                      // Navigator.pushReplacementNamed(
-                      //     context, LoadingScreen.pageRoute);
                     },
               disabledColor: Colors.grey,
               elevation: 0,

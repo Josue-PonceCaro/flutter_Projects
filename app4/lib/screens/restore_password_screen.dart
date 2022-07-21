@@ -1,8 +1,10 @@
 import 'package:app4/screens/login_screen.dart';
+import 'package:app4/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
 import 'package:app4/ui/input_decorations.dart';
 import 'package:app4/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RestorePasswordScreen extends StatelessWidget {
   static const String pageRoute = 'Restore';
@@ -86,7 +88,11 @@ class _LoginForm extends StatelessWidget {
          
             const SizedBox(height: 30,),
             MaterialButton(
-              onPressed: () {
+              onPressed: () async {
+                final authService = Provider.of<AuthService>(context, listen: false);
+                await Future.delayed(Duration(seconds: 2));
+                final String? resetPassword = await authService.resetPassword('j.ponce@qairadrones.com');
+                await Future.delayed(Duration(seconds: 5));
                 // Navigator.pushReplacementNamed(context, LoginScreen.pageRoute);
               },
               disabledColor: Colors.grey,

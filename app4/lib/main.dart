@@ -1,6 +1,9 @@
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/screens/login_screen.dart';
+import 'package:app4/screens/welcome_screen.dart';
 import 'package:app4/services/services.dart';
+import 'package:app4/share_preferences/share_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app4/screens/screens.dart';
@@ -28,8 +31,9 @@ import 'package:provider/provider.dart';
 //   );
 // =======
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await Preferences.init();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: ((context) => GpsBloc())),
     BlocProvider(create: ((context) => LocationBloc())),
@@ -37,7 +41,6 @@ void main() async {
         create: ((context) =>
             MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
   ], child: const MapsApp()));
-// >>>>>>> b0996bf0fb7791531c27a7487641ba7bbd2c9326
 }
 
 class MapsApp extends StatelessWidget {
@@ -48,13 +51,14 @@ class MapsApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
-        // ChangeNotifierProvider(create: (_) => LoginService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
+        // initialRoute: WelcomeScreen.pageRoute,
         initialRoute: LoginScreen.pageRoute,
         routes: {
+          WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),
           LoadingScreen.pageRoute: (context) => const LoadingScreen(),
           LoginScreen.pageRoute: (context) => const LoginScreen(),
           RegisterScreen.pageRoute: (context) => const RegisterScreen(),
