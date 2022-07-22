@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl_Mikel = 'f0a8-190-42-109-81.ngrok.io';
+  final String _baseUrl_Mikel = 'f2c4-190-42-109-81.ngrok.io';
   final String _baseUrl_FireBase = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyAmbP60XAtmROaANoFkcx4Rv2V45quwtzs';
   // final String _firebaseToken = 'AIzaSyAs1yaOZNmEl5M63ero5XMJyQSwhm1wA_M';
@@ -21,7 +21,7 @@ class AuthService extends ChangeNotifier {
   }
 
 
-  Future<String> loginUser(String email, String password) async {
+  Future<String?> loginUser(String email, String password) async {
     final Map<String, dynamic> authData = {
       'email': email,
       'password': password,
@@ -31,6 +31,7 @@ class AuthService extends ChangeNotifier {
         {'key': _firebaseToken});
     final resp = await http.post(url, body: json.encode(authData));
     print('-----------SINCE HERE----------------');
+    print(resp.body);
     try {
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('idToken')) {
@@ -42,14 +43,20 @@ class AuthService extends ChangeNotifier {
     } on Exception catch (e) {
       print(e);
     }
-    return '';
+    return null;
   }
-  Future<String?> createUser(String email, String password, String name, String phone, String birthday, String gender) async {
+  Future<String?> createUser({ 
+    required String email, 
+    required String name, 
+    required String phone, 
+    required String password, 
+    required String birthday, 
+    required String gender
+    }) async {
     final Map<String, dynamic> authData = {
       'email': email,
       'password': password,
-      "first_name": name,
-      "last_name": " - ",
+      "name": name,
       "phone_number": '+51$phone',
       "birthdate": birthday,
       "gender": gender,
@@ -80,19 +87,41 @@ class AuthService extends ChangeNotifier {
       return e.toString();
     }
   }
-  Future<String> lookUpUser(String idToken) async {
+  Future<Map<String, dynamic>> lookUpUser(String idToken) async {
     final Map<String, String> head = {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
     };
     final url = Uri.https(_baseUrl_Mikel, '/auth/user');
     final resp = await http.get(url, headers: head);
+    // {"birthdate":"01-01-1900",
+    //"email":"j.ponce@qairadrones.com",
+    //"first_name":"Cose",
+    //"gender":"Otros",
+    //"last_name":" - ","
+    //phone_number":"+51943453453"}
     print('LookUp User-------');
     print(resp);
     print(resp.body);
-    return '';
+
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('email') || decodeResp.containsKey('phone_number')) {
+        return decodeResp;
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return {};
   }
-  Future<String?> emailVerified(String idToken) async {
+
+
+
+
+
+  Future<bool?> isEmailVerified(String idToken) async {
     final Map<String, String> head = {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
@@ -103,13 +132,58 @@ class AuthService extends ChangeNotifier {
     // {"email_verified":false}
     print(resp);
     print(resp.body);
-    return '';
+
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('email_verified')) {
+        return decodeResp['email_verified'];
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
   }
-  Future<String?> changeUserData(String email, String name, String phone, String birthday, String gender, String idToken) async {
+
+  Future<bool> deleteUserAccount(String idToken) async {
+    final Map<String, String> head = {
+      HttpHeaders.authorizationHeader: idToken,
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
+    final url = Uri.https(_baseUrl_Mikel, '/auth/user');
+    final resp = await http.delete(url, headers: head);
+    print('Delete Account-------');
+    // {"email_verified":false}
+    print(resp);
+    print(resp.body);
+
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('success')) {
+        return true;
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+
+
+  Future<bool> changeUserData({
+    required String email, 
+    required String name, 
+    required String phone, 
+    required String birthday, 
+    required String gender, 
+    required String idToken
+    }) async {
     final Map<String, dynamic> authData = {
       'email': email,
-      "first_name": name,
-      "last_name": " - ",
+      "name": name,
       "phone_number": '+51$phone',
       "birthdate": birthday,
       "gender": gender,
@@ -120,14 +194,21 @@ class AuthService extends ChangeNotifier {
       }; 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user');
     final resp = await http.put(url, headers: head, body: json.encode(authData));
-    print('Change User Data-------');
-    print(resp);
-    print(resp.body);
-    return '';
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('success')) {
+        return true;
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return false;
     
   }
 
-  Future<String?> verifyEmail(String idToken) async {
+  Future<bool> verifyEmail(String idToken) async {
     final Map<String, String> head = {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
@@ -135,12 +216,18 @@ class AuthService extends ChangeNotifier {
 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/verify-email');
     final resp = await http.put(url,headers: head);
-    print('Verify EMAIL-------');
     // {"success":"A verification link will be sent to the email"}
-    print(resp);
-    print(resp.body);
-
-    return null;
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('success')) {
+        return true;
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return false;
   }
   Future<String?> resetPassword(String email) async {
     final Map<String, dynamic> authData = {'email': email};
@@ -154,7 +241,7 @@ class AuthService extends ChangeNotifier {
 
     return null;
   }
-  Future<String?> changePassword(String idToken, String password) async {
+  Future<bool> changePassword(String idToken, String password) async {
     final Map<String, String> head = {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
@@ -163,11 +250,17 @@ class AuthService extends ChangeNotifier {
 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/change-password');
     final resp = await http.put(url,headers: head, body: json.encode(authData));
-    print('Change password-------');
-    print(resp);
-    print(resp.body);
-
-    return null;
+    try {
+      final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      if (decodeResp.containsKey('success')) {
+        return true;
+      } else {
+        print(decodeResp);
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return false;
   }
 
 

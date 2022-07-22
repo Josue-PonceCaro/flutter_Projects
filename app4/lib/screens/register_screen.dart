@@ -20,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
         AuthBackground(
             child: SingleChildScrollView(
                 child: ChangeNotifierProvider(
-          create: (buildeContext) => RegisterFormProvider(),
+          create: (registerContext) => AuthFormProvider(),
           child: Column(
             children: [
               const SizedBox(
@@ -49,11 +49,12 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              Consumer<RegisterFormProvider>(
+              Consumer<AuthFormProvider>(
                 builder: (context, registerForm, _) => TextButton(
                   onPressed: registerForm.isLoading
                       ? null
                       : () {
+                        
                           Navigator.pushReplacementNamed(
                               context, LoginScreen.pageRoute);
                         },
@@ -80,10 +81,10 @@ class RegisterScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final registerForm = Provider.of<RegisterFormProvider>(context);
+    final registerForm = Provider.of<AuthFormProvider>(context);
     return Container(
       child: Form(
-        key: registerForm.formKey,
+        key: registerForm.formKeyRegister,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         // TODO: Mantener la referencia al KEY
         child: Column(
@@ -108,7 +109,7 @@ class _LoginForm extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
-              onChanged: (value) => registerForm.phoneNumber = value,
+              onChanged: (value) => registerForm.userPhoneNumber = value,
               readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -147,7 +148,7 @@ class _LoginForm extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
-              onChanged: (value) => registerForm.userPassWord = value,
+              onChanged: (value) => registerForm.userPassword = value,
               readOnly: registerForm.isLoading ? true : false,
               autocorrect: false,
               keyboardType: TextInputType.visiblePassword,
@@ -171,21 +172,33 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
-                      if (!registerForm.isValid()) return;
+                      if (!registerForm.isValidRegister()) return;
                       registerForm.isLoading = true;
                       final authService = Provider.of<AuthService>(context, listen: false);
                       final String? errorMsg = await authService.createUser(
-                          registerForm.userEmail,
-                          registerForm.userPassWord,
-                          registerForm.userName,
-                          registerForm.phoneNumber,
-                          registerForm.userBirthday,
-                          registerForm.gender);
+                          email: registerForm.userEmail,
+                          password: registerForm.userPassword,
+                          name: registerForm.userName,
+                          phone: registerForm.userPhoneNumber,
+                          birthday: registerForm.userBirthday,
+                          gender: registerForm.gender);
                       
                       await Future.delayed(Duration(seconds: 2));
 
                       if(errorMsg == null) {
                         // Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
+                        final String? token = await authService.loginUser(
+                          registerForm.userEmail, registerForm.userPassword);
+                        
+                        if(token != null) {
+                          Preferences.firebaseToken = token;
+                          Preferences.userName = registerForm.userName;
+                          Preferences.userPassword = registerForm.userPassword;
+                          Preferences.userEmail = registerForm.userEmail;
+                          Preferences.userPhoneNumber = registerForm.userPhoneNumber;
+
+                          await authService.verifyEmail(token);
+                        }
                       }
                       else{
                         print(errorMsg);
@@ -204,8 +217,11 @@ class _LoginForm extends StatelessWidget {
                       //   'masculino', 
                       //   token
                       //   );
-
                       registerForm.isLoading = false;
+                      if(errorMsg == null) {
+                        Navigator.pushReplacementNamed(context, SettingsScreen.pageRoute);
+                      }
+                      
                     },
               disabledColor: Colors.grey,
               elevation: 0,

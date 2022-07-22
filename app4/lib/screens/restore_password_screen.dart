@@ -1,3 +1,4 @@
+import 'package:app4/providers/providers.dart';
 import 'package:app4/screens/login_screen.dart';
 import 'package:app4/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -17,42 +18,46 @@ class RestorePasswordScreen extends StatelessWidget {
       body: Stack(children:  [
          AuthBackground(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
 
-                const SizedBox(height: 250,),
-                
-                CardContainer(
-                  child: Column(
-                    children: [
-
-                      const SizedBox(height: 10,),
-                      const Text(
-                             'Recuperar contrasenha',
-                             style: TextStyle(color: Colors.black54, fontSize: 30),
-                    //style: Theme.of(context).textTheme.headline4,
-                    
+            child: ChangeNotifierProvider(
+              create: (restorContext) => AuthFormProvider(),
+              child: Column(
+                children: [
+                  const SizedBox(height: 250,),
+                  CardContainer(
+                    child: Column(
+                      children: [
+            
+                        const SizedBox(height: 10,),
+                        const Text(
+                               'Recuperar contrasenha',
+                               style: TextStyle(color: Colors.black54, fontSize: 30),
+                      //style: Theme.of(context).textTheme.headline4,
+                      
+                        ),
+                        const SizedBox(height: 30,),
+                        _LoginForm(),
+                        const SizedBox(height: 30,)
+                      ],
+                    )
+                  ),
+                  const SizedBox(height: 50,),
+                  Consumer<AuthFormProvider>(
+                    builder: (context, recoverForm, _) =>  TextButton(
+                      onPressed: recoverForm.isLoading ? null : () {
+                        Navigator.pushReplacementNamed(context, LoginScreen.pageRoute);
+                      }, 
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1))
                       ),
-                      const SizedBox(height: 30,),
-                      _LoginForm(),
-                      const SizedBox(height: 30,)
-                    ],
-                  )
-                ),
-                const SizedBox(height: 50,),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, LoginScreen.pageRoute);
-                  }, 
-                  style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1))
+                      child: const Text('Regresar', 
+                      style: TextStyle(fontSize: 18, color: Colors.black87),),
+                      ),
                   ),
-                  child: const Text('Regresar', 
-                  style: TextStyle(fontSize: 18, color: Colors.black87),),
-                  ),
-                
-                const SizedBox(height: 100,)
-              ],
+                  
+                  const SizedBox(height: 100,)
+                ],
+              ),
             ),
             )
          ),
@@ -65,13 +70,18 @@ class RestorePasswordScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final recoverForm = Provider.of<AuthFormProvider>(context);
     return Container(
       child: Form(
+        // key: recoverForm.formKeyRestorPass,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         // TODO: Mantener la referencia al KEY
         child: Column(
           children: [
             TextFormField(
+              readOnly: recoverForm.isLoading ? true : false,
+              onChanged: (value) => recoverForm.userEmail = value,
+              
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               style: const TextStyle(color: Colors.deepPurple),
@@ -81,18 +91,20 @@ class _LoginForm extends StatelessWidget {
                 prefixIcon: Icons.alternate_email_outlined
               ),
               validator: (value){
-                
                 return InternalValidations.emailValidator(value) ? null : 'Correo inválido';
               },
               ),
          
             const SizedBox(height: 30,),
             MaterialButton(
-              onPressed: () async {
+              onPressed: recoverForm.isLoading ? null : () async {
+                if(!recoverForm.isValidRestorPass()) return;
+                recoverForm.isLoading = true;
                 final authService = Provider.of<AuthService>(context, listen: false);
                 await Future.delayed(Duration(seconds: 2));
-                final String? resetPassword = await authService.resetPassword('j.ponce@qairadrones.com');
+                final String? resetPassword = await authService.resetPassword(recoverForm.userEmail);
                 await Future.delayed(Duration(seconds: 5));
+                recoverForm.isLoading = false;
                 // Navigator.pushReplacementNamed(context, LoginScreen.pageRoute);
               },
               disabledColor: Colors.grey,

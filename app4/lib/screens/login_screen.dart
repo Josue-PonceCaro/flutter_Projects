@@ -1,5 +1,6 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
@@ -18,7 +19,7 @@ class LoginScreen extends StatelessWidget {
         AuthBackground(
         child: SingleChildScrollView(
           child: ChangeNotifierProvider(
-            create: (buildContext) => LoginFormProvider(),
+            create: (loginContext) => AuthFormProvider(),
             child: Column(
               children: [
                 const SizedBox(
@@ -47,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                Consumer<LoginFormProvider>(
+                Consumer<AuthFormProvider>(
                     builder: (context, loginForm, _) => TextButton(
                           onPressed: loginForm.isLoading
                               ? null
@@ -79,11 +80,11 @@ class LoginScreen extends StatelessWidget {
 class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final loginFomr = Provider.of<LoginFormProvider>(context);
+    final loginFomr = Provider.of<AuthFormProvider>(context);
     return Container(
       child: Form(
         // TODO: Mantener la referencia al KEY
-        key: loginFomr.formKey,
+        key: loginFomr.formKeyLogin,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -107,7 +108,7 @@ class _LoginForm extends StatelessWidget {
               height: 30,
             ),
             TextFormField(
-              onChanged: (value) => loginFomr.userPassWord = value,
+              onChanged: (value) => loginFomr.userPassword = value,
               autocorrect: false,
               readOnly: loginFomr.isLoading ? true : false,
               keyboardType: TextInputType.emailAddress,
@@ -127,8 +128,9 @@ class _LoginForm extends StatelessWidget {
               onPressed: loginFomr.isLoading
                   ? null
                   : () {
+
                       Navigator.pushReplacementNamed(
-                          context, RestorePasswordScreen.pageRoute);
+                          context, RestoreScreen.pageRoute);
                     },
               style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(
@@ -150,26 +152,69 @@ class _LoginForm extends StatelessWidget {
                           .unfocus(); // Para quitar el teclado
                       // Se pone listen en false porque NO SE PUEDE ESCUCHAR DENTRO DE UN METODO
                       // Solo se puede escuchar dentro del build
-                      if (!loginFomr.isValid()) return;
+                      if (!loginFomr.isValidLogin()) return;
                       loginFomr.isLoading = true;
                       // TODO: validad si el login es correcto
 
-                      // UserCredential user = await FirebaseAuth.instance
+                      // UserCredential user1 = await FirebaseAuth.instance
                       //     .signInWithEmailAndPassword(
                       //         email: loginFomr.userEmail,
-                      //         password: loginFomr.userPassWord);
-                      // print(user);
-                      // print(user.user?.uid);
+                      //         password: loginFomr.userPassword);
+                      // print(user1.user);
+                      // print(user1.user?.uid);
+                      // User? user = FirebaseAuth.instance.currentUser;
+
+                      // if (user!= null && !user.emailVerified) {
+                      //   await user.sendEmailVerification();
+                      // }
+
+
 
                       final authService =
                           Provider.of<AuthService>(context, listen: false);
-                      final String token = await authService.loginUser(
-                          loginFomr.userEmail, loginFomr.userPassWord);
+                      final String? token = await authService.loginUser(
+                          loginFomr.userEmail, loginFomr.userPassword);
 
+                      if(token != null) {
+                        Preferences.firebaseToken = token;
+                        Preferences.userEmail = loginFomr.userEmail; //DELETE THIS
+                        Preferences.userPassword = loginFomr.userPassword; //DELETE THIS
+                        final Map<String, dynamic> dataLook = await authService.lookUpUser(token);
+                        
+                        if(dataLook.isEmpty == false){
+                      
+                            //"first_name":"Cose",
+                            //"gender":"Otros",
+                            //"last_name":" - ","
+                            //phone_number":"+51943453453"}
+                          Preferences.userEmail = dataLook['email'] ;
+                          Preferences.userBirthday = dataLook['birthdate'] ;
+                          Preferences.userName = dataLook['name'] ;
+                          Preferences.userGender = Preferences.getGenderNumber(dataLook['gender']) ;
+                          Preferences.userPhoneNumber = dataLook['phone_number'].substring(3) ;      
+                          Preferences.userPassword = loginFomr.userPassword;
+                        
+                        }
+
+                        final bool? emailVerified = await authService.isEmailVerified(token);
+                        if(emailVerified != null){
+                          Preferences.isEmailVerified = emailVerified;
+                          if(!emailVerified) await authService.verifyEmail(token);
+                        }
+                        // Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
+                      // TESTING DELETING 
+                        // await Future.delayed(Duration(seconds: 3));
+                        // final bool isDeleted = await authService.deleteUserAccount(token);
+                      }
                       await Future.delayed(Duration(seconds: 3));
+                      loginFomr.isLoading = false;
+                      if(token != null) {
+                        Navigator.pushReplacementNamed(context, SettingsScreen.pageRoute);
+                      }
+                      // Navigator.pushReplacementNamed(context, SettingsScreen.pageRoute);
+                      
+                      
                       // GET TESTING ----------
-                      // final String dataLook = await authService.lookUpUser(token);
-                      final String? email_verified = await authService.emailVerified(token);
                       // await Future.delayed(Duration(seconds: 5));
                       // PUT TESTING ---------
                       // final String? changing_user_data = await authService.changeUserData(
@@ -180,11 +225,11 @@ class _LoginForm extends StatelessWidget {
                       //   'masculino', 
                       //   token
                       //   );
-                      await Future.delayed(Duration(seconds: 5));
-                      final String? verify_email = await authService.verifyEmail(token);
-                      await Future.delayed(Duration(seconds: 5));
-                      final String? change_password = await authService.changePassword(token, '654321');
-                      await Future.delayed(Duration(seconds: 5));
+                      // await Future.delayed(Duration(seconds: 5));
+                      // final String? verify_email = await authService.verifyEmail(token);
+                      // await Future.delayed(Duration(seconds: 5));
+                      // final String? change_password = await authService.changePassword(token, '654321');
+                      // await Future.delayed(Duration(seconds: 5));
                       // final String? resetPassword = await authService.resetPassword('j.ponce@qairadrones.com');
 
 
@@ -194,9 +239,6 @@ class _LoginForm extends StatelessWidget {
 
 
 
-                      loginFomr.isLoading = false;
-
-                      // if(token != '') Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
                     },
               disabledColor: Colors.grey,
               elevation: 0,

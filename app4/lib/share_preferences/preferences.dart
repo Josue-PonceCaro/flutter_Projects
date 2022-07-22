@@ -4,14 +4,49 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static late SharedPreferences _prefer;
   static String _userName = '';
-  static String _userBirthday = '01-01-1990';
-  static int _userGender = 3;
+  static String _userBirthday = '';
+  static int _userGender = 0;
   static String _userPassword = '';
   static String _userEmail = '';
+  static String _userPhoneNumber = '';
   static int _userCiclistPeaton = 1;
   static int _userAirQualityPref = 50;
   static bool _isDark = false;
+  static bool _isEmailVerified = false;
   static String _firebaseToken = '';
+
+  static void cleanPreferences (){
+      userName = '';
+      userBirthday = '';
+      userGender = 0;
+      userPassword = '';
+      userEmail = '';
+      userPhoneNumber = '';
+      userCiclistPeaton = 1;
+      userAirQualityPref = 50;
+      isDark = false;
+      isEmailVerified = false;
+      firebaseToken = '';
+  }
+  static int  getGenderNumber (String genderString){
+    genderString.toLowerCase();
+    if(genderString == 'masculino') {return 1;}
+    else if(genderString == 'femenino') {return 2;}
+    else if(genderString == 'otros') {return 3;}
+    return 0;
+  }
+  static String getGenderString (){
+    if (_userGender == 1) { return 'masculino';}
+    else if (_userGender == 2) { return 'femenino';}
+    else if (_userGender == 3) { return 'otros';}
+    return '';
+  }
+  static String getGenderStringPassingValue (int gender){
+    if (gender == 1) { return 'masculino';}
+    else if (gender == 2) { return 'femenino';}
+    else if (gender == 3) { return 'otros';}
+    return '';
+  }
 
   static Future init() async{
     _prefer = await SharedPreferences.getInstance();
@@ -23,6 +58,14 @@ class Preferences {
   static set firebaseToken (String value) {
     _prefer.setString('firebaseToken', value);
     _firebaseToken = value;
+  }
+
+  static bool get isEmailVerified {
+    return _prefer.getBool('isEmailVerified') ?? _isEmailVerified;
+  }
+  static set isEmailVerified (bool value) {
+    _prefer.setBool('isEmailVerified', value);
+    _isEmailVerified = value;
   }
 
   static bool get isDark {
@@ -55,6 +98,13 @@ class Preferences {
   static set userEmail (String value) {
     _prefer.setString('userEmail', value);
     _userEmail = value;
+  }
+  static String get userPhoneNumber {
+    return _prefer.getString('userPhoneNumber') ?? _userPhoneNumber;
+  }
+  static set userPhoneNumber (String value) {
+    _prefer.setString('userPhoneNumber', value);
+    _userPhoneNumber = value;
   }
 
 

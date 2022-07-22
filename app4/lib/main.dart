@@ -56,12 +56,15 @@ class MapsApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
         // initialRoute: WelcomeScreen.pageRoute,
+        // initialRoute: SettingsScreen.pageRoute,
         initialRoute: LoginScreen.pageRoute,
         routes: {
           WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),
           LoadingScreen.pageRoute: (context) => const LoadingScreen(),
           LoginScreen.pageRoute: (context) => const LoginScreen(),
           RegisterScreen.pageRoute: (context) => const RegisterScreen(),
+          SettingsScreen.pageRoute:(context) => const SettingsScreen(),
+          RestoreScreen.pageRoute:(context) => const RestoreScreen(),
           RestorePasswordScreen.pageRoute: (context) =>
               const RestorePasswordScreen(),
         },
