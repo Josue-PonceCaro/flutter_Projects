@@ -19,7 +19,7 @@ class AuthBackground extends StatelessWidget {
           Column(
             
             children: [
-              const Divider(height: 100,),
+              const Divider(height: 100, color: AppTheme.white,),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(left: 20),
@@ -29,7 +29,7 @@ class AuthBackground extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w900, color: AppTheme.black, fontSize: 35),
                   ),
               ),
-              const Divider(height: 20,),
+              const Divider(height: 20, color: AppTheme.white,),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(left: 20, right: 20),

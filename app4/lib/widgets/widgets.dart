@@ -1,3 +1,5 @@
+export 'package:app4/widgets/auth_widgets.dart';
+
 export 'package:app4/widgets/welcome_backgroud.dart';
 
 export 'package:app4/widgets/auth_background.dart';

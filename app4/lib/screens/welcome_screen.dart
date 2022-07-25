@@ -32,7 +32,7 @@ class _WelcomeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 150,
+      padding: EdgeInsets.symmetric(vertical: 10),
       alignment: Alignment.bottomCenter,
       child: MaterialButton(
         onPressed: () {

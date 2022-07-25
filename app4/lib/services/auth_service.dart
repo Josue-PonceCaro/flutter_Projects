@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl_Mikel = 'f2c4-190-42-109-81.ngrok.io';
+  final String _baseUrl_Mikel = '0db2-190-42-109-118.ngrok.io';
   final String _baseUrl_FireBase = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyAmbP60XAtmROaANoFkcx4Rv2V45quwtzs';
   // final String _firebaseToken = 'AIzaSyAs1yaOZNmEl5M63ero5XMJyQSwhm1wA_M';
@@ -29,10 +29,11 @@ class AuthService extends ChangeNotifier {
     };
     final url = Uri.https(_baseUrl_FireBase, '/v1/accounts:signInWithPassword',
         {'key': _firebaseToken});
-    final resp = await http.post(url, body: json.encode(authData));
-    print('-----------SINCE HERE----------------');
-    print(resp.body);
     try {
+      final resp = await http.post(url, body: json.encode(authData));
+      print('-----------SINCE HERE----------------');
+      print(resp.body);
+      
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('idToken')) {
         print(decodeResp['idToken']);
@@ -70,11 +71,12 @@ class AuthService extends ChangeNotifier {
     // {"error":"The user with the provided email already exists (EMAIL_EXISTS)."}
     // final url = Uri.https(_baseUrl_FireBase, '/v1/accounts:signUp', {'key': _firebaseToken});
     final url = Uri.https(_baseUrl_Mikel, '/auth/register');
-    final resp = await http.post(url, headers: head, body: json.encode(authData));
-
-    // final Map<String, dynamic> decodeResp = json.decode(resp.body);
-    print('-----------SINCE HERE --------');
     try{
+      final resp = await http.post(url, headers: head, body: json.encode(authData));
+
+      // final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      print('-----------SINCE HERE --------');
+      
       final Map<String, dynamic> decodedResp = json.decode(resp.body);
       if(decodedResp.containsKey('success')){
         // TODO: save values to storage
@@ -93,18 +95,19 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.contentTypeHeader: 'application/json'
     };
     final url = Uri.https(_baseUrl_Mikel, '/auth/user');
-    final resp = await http.get(url, headers: head);
-    // {"birthdate":"01-01-1900",
-    //"email":"j.ponce@qairadrones.com",
-    //"first_name":"Cose",
-    //"gender":"Otros",
-    //"last_name":" - ","
-    //phone_number":"+51943453453"}
-    print('LookUp User-------');
-    print(resp);
-    print(resp.body);
-
     try {
+      final resp = await http.get(url, headers: head);
+      // {"birthdate":"01-01-1900",
+      //"email":"j.ponce@qairadrones.com",
+      //"first_name":"Cose",
+      //"gender":"Otros",
+      //"last_name":" - ","
+      //phone_number":"+51943453453"}
+      print('LookUp User-------');
+      print(resp);
+      print(resp.body);
+
+    
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('email') || decodeResp.containsKey('phone_number')) {
         return decodeResp;
@@ -127,13 +130,14 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.contentTypeHeader: 'application/json'
     };
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/email-verified');
-    final resp = await http.get(url, headers: head);
-    print('Verified EMAIL-------');
-    // {"email_verified":false}
-    print(resp);
-    print(resp.body);
-
     try {
+      final resp = await http.get(url, headers: head);
+      print('Verified EMAIL-------');
+      // {"email_verified":false}
+      print(resp);
+      print(resp.body);
+
+    
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('email_verified')) {
         return decodeResp['email_verified'];
@@ -152,13 +156,14 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.contentTypeHeader: 'application/json'
     };
     final url = Uri.https(_baseUrl_Mikel, '/auth/user');
-    final resp = await http.delete(url, headers: head);
-    print('Delete Account-------');
-    // {"email_verified":false}
-    print(resp);
-    print(resp.body);
-
     try {
+      final resp = await http.delete(url, headers: head);
+      print('Delete Account-------');
+      // {"email_verified":false}
+      print(resp);
+      print(resp.body);
+
+    
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('success')) {
         return true;
@@ -193,8 +198,8 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.contentTypeHeader: 'application/json'
       }; 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user');
-    final resp = await http.put(url, headers: head, body: json.encode(authData));
     try {
+      final resp = await http.put(url, headers: head, body: json.encode(authData));
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('success')) {
         return true;
@@ -215,9 +220,9 @@ class AuthService extends ChangeNotifier {
       }; 
 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/verify-email');
-    final resp = await http.put(url,headers: head);
-    // {"success":"A verification link will be sent to the email"}
     try {
+      final resp = await http.put(url,headers: head);
+    // {"success":"A verification link will be sent to the email"}
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('success')) {
         return true;
@@ -234,10 +239,15 @@ class AuthService extends ChangeNotifier {
     final Map<String, String> head = {HttpHeaders.contentTypeHeader: 'application/json'}; 
 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/reset-password');
-    final resp = await http.put(url,headers: head, body: json.encode(authData));
-    print('resetPassword-------');
-    print(resp);
-    print(resp.body);
+    try{
+
+      final resp = await http.put(url,headers: head, body: json.encode(authData));
+      print('resetPassword-------');
+      print(resp);
+      print(resp.body);
+    }on Exception catch (e) {
+      print(e);
+    }
 
     return null;
   }
@@ -249,8 +259,8 @@ class AuthService extends ChangeNotifier {
     final Map<String, dynamic> authData = {'password': password};
 
     final url = Uri.https(_baseUrl_Mikel, '/auth/user/change-password');
-    final resp = await http.put(url,headers: head, body: json.encode(authData));
     try {
+      final resp = await http.put(url,headers: head, body: json.encode(authData));
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
       if (decodeResp.containsKey('success')) {
         return true;

@@ -67,17 +67,19 @@ class WelcomeBackground extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 120,),
+                    SizedBox(height: sizeScreen.height * 0.15,),
                     Container(
+                      width: double.infinity,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: const[
-                          SizedBox(width: 155,),
                           Icon(Icons.nordic_walking, color: AppTheme.white,),
                           SizedBox(width: 20,),
                           Icon(Icons.pedal_bike, color: AppTheme.white,),
                           SizedBox(width: 20,),
                           Icon(Icons.directions_run, color: AppTheme.white,),
+                          SizedBox(width: 115,),
                         ],
                       ),
                     ),
@@ -113,7 +115,8 @@ class WelcomeBackground extends StatelessWidget {
                           ],
                       ),
                     ),
-                     child,
+                    SizedBox(height: sizeScreen.height * 0.17,),
+                    child,
                   ],
                 ),
           ),
@@ -183,7 +186,7 @@ class _CircularPainter extends CustomPainter {
 
     pencil.color = AppTheme.gray80;
     pencil.style = PaintingStyle.stroke;
-    pencil.strokeWidth = 0.3;
+    pencil.strokeWidth = 1.5;
     final path = Path();
     // path.moveTo(paperWidth * 0.25, paperHeigh * 0.6);
     // path.quadraticBezierTo(paperWidth*0.5, paperHeigh*0.5, paperWidth * 0.75, paperHeigh * 0.6);
