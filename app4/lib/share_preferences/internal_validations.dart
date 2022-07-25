@@ -11,13 +11,14 @@ class InternalValidations {
   }
 
   static bool phoneValidator(value) {
-    String pattern = r"^(?:[+0]51)?9[0-9]{8}$";
+    String pattern = r"^[0-9]{9}$";
+    // String pattern = r"^(?:[+0]51)?9[0-9]{8}$";
     RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value ?? '');
   }
 
   static bool nameValidator(value) {
-    String pattern = r"^[\p{L} ,.'-]*$";
+    String pattern = r"^[\p{L} ,.'-]+$";
     RegExp regExp = RegExp(pattern, caseSensitive: false, unicode: true, dotAll: true);
     return regExp.hasMatch(value ?? '');
   }

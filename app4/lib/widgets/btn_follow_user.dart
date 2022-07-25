@@ -1,4 +1,5 @@
 import 'package:app4/blocs/blocs.dart';
+import 'package:app4/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,8 @@ class BtnFollowUser extends StatelessWidget {
                 color: Colors.black,
               ),
               onPressed: () {
-                mapBloc.add(WillStartFollowingUser());
+                Navigator.pushNamed(context, SettingsScreen.pageRoute);
+                // mapBloc.add(WillStartFollowingUser());
                 // TODO:
               },
             );

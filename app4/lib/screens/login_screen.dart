@@ -1,5 +1,6 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/services.dart';
+import 'package:app4/themes/themes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/screens/screens.dart';
@@ -11,12 +12,14 @@ import 'package:provider/provider.dart';
 class LoginScreen extends StatelessWidget {
   static const String pageRoute = 'Login';
   const LoginScreen({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
         AuthBackground(
+        welcomeText: '¡Hola!',
+        descriptionText: 'Ingresa tus datos y empecemos a rutear.',
         child: SingleChildScrollView(
           child: ChangeNotifierProvider(
             create: (loginContext) => AuthFormProvider(),
@@ -28,45 +31,46 @@ class LoginScreen extends StatelessWidget {
                 CardContainer(
                     child: Column(
                   children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      'Iniciar sesión',
-                      style: TextStyle(color: Colors.black54, fontSize: 40),
-                      //style: Theme.of(context).textTheme.headline4,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const Text(
+                    //   'Iniciar sesión',
+                    //   style: TextStyle(color: Colors.black54, fontSize: 40),
+                    //   //style: Theme.of(context).textTheme.headline4,
+                    // ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
                     _LoginForm(),
                     const SizedBox(
                       height: 30,
                     )
                   ],
                 )),
+                // const SizedBox(
+                //   height: 50,
+                // ),
+                // Consumer<AuthFormProvider>(
+                //     builder: (context, loginForm, _) => TextButton(
+                //           onPressed: loginForm.isLoading
+                //               ? null
+                //               : () {
+                //                   Navigator.pushNamed(context, RegisterScreen.pageRoute);
+                //                   // Navigator.pushReplacementNamed(context, RegisterScreen.pageRoute);
+                //                 },
+                //           style: ButtonStyle(
+                //               overlayColor: MaterialStateProperty.all(
+                //                   Colors.indigo.withOpacity(0.1))),
+                //           child: const Text(
+                //             'Registrate',
+                //             style:
+                //                 TextStyle(fontSize: 18, color: AppTheme.blue),
+                //           ),
+                //         ),
+                //         ),
                 const SizedBox(
-                  height: 50,
-                ),
-                Consumer<AuthFormProvider>(
-                    builder: (context, loginForm, _) => TextButton(
-                          onPressed: loginForm.isLoading
-                              ? null
-                              : () {
-                                  Navigator.pushReplacementNamed(
-                                      context, RegisterScreen.pageRoute);
-                                },
-                          style: ButtonStyle(
-                              overlayColor: MaterialStateProperty.all(
-                                  Colors.indigo.withOpacity(0.1))),
-                          child: const Text(
-                            'Crear cuenta nueva ',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black87),
-                          ),
-                        )),
-                const SizedBox(
-                  height: 100,
+                  height: 200,
                 )
               ],
             ),
@@ -97,7 +101,8 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   hintText: 'enamil@ext.com',
                   labelText: 'Correo electrónico',
-                  prefixIcon: Icons.alternate_email_outlined),
+                  // prefixIcon: Icons.alternate_email_outlined
+                  ),
               validator: (value) {
                 return InternalValidations.emailValidator(value)
                     ? null
@@ -117,28 +122,64 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   labelText: 'Contrasenha',
                   hintText: '••••••••',
-                  prefixIcon: Icons.password_sharp),
+                  sufixIcon: Icons.remove_red_eye,
+                  ),
               validator: (value) {
                 return InternalValidations.passwordValidator(value)
                     ? null
                     : 'Extensión incorrecta';
               },
             ),
-            TextButton(
-              onPressed: loginFomr.isLoading
-                  ? null
-                  : () {
+            Container(
+              alignment: Alignment.bottomRight,
+              width: double.infinity,
+              child: TextButton(
+                onPressed: loginFomr.isLoading
+                    ? null
+                    : () {
 
-                      Navigator.pushReplacementNamed(
-                          context, RestoreScreen.pageRoute);
-                    },
-              style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(
-                      Colors.indigo.withOpacity(0.1))),
-              child: const Text(
-                'Olvidaste tu Contrasenha',
-                style: TextStyle(fontSize: 10, color: Colors.black54),
+                        Navigator.pushNamed(context, RestorePasswordScreen.pageRoute);
+                        // Navigator.pushReplacementNamed(context, RestorePasswordScreen.pageRoute);
+                      },
+                style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(
+                        Colors.indigo.withOpacity(0.1))),
+                child: const Text(
+                  '¿Olvidaste tu contraseña?',
+                  style: TextStyle(
+                    fontSize: 12,
+                     color: AppTheme.blue,
+                     decoration: TextDecoration.underline,
+                     ),
+                ),
               ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              children: [
+                const Text(
+                  '¿No tienes una cuenta?',
+                  style: TextStyle(color: AppTheme.black, fontSize: 15),
+                  ),
+                TextButton(
+                  onPressed: loginFomr.isLoading
+                      ? null
+                      : () {
+                          Navigator.pushNamed(context, RegisterScreen.pageRoute);
+                          // Navigator.pushReplacementNamed(context, RegisterScreen.pageRoute);
+                        },
+                  style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.indigo.withOpacity(0.1))),
+                  child: const Text(
+                    'Registrate',
+                    style:
+                        TextStyle(fontSize: 15, color: AppTheme.blue, fontWeight: FontWeight.w900),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(
               height: 30,
@@ -187,12 +228,12 @@ class _LoginForm extends StatelessWidget {
                             //"gender":"Otros",
                             //"last_name":" - ","
                             //phone_number":"+51943453453"}
-                          Preferences.userEmail = dataLook['email'] ;
+                          // Preferences.userEmail = dataLook['email'] ; // TODO: evaluate this
                           Preferences.userBirthday = dataLook['birthdate'] ;
                           Preferences.userName = dataLook['name'] ;
                           Preferences.userGender = Preferences.getGenderNumber(dataLook['gender']) ;
                           Preferences.userPhoneNumber = dataLook['phone_number'].substring(3) ;      
-                          Preferences.userPassword = loginFomr.userPassword;
+                          // Preferences.userPassword = loginFomr.userPassword; // TODO: evaluate this
                         
                         }
 
@@ -209,9 +250,9 @@ class _LoginForm extends StatelessWidget {
                       await Future.delayed(Duration(seconds: 3));
                       loginFomr.isLoading = false;
                       if(token != null) {
-                        Navigator.pushReplacementNamed(context, SettingsScreen.pageRoute);
-                      }
+                        Navigator.pushReplacementNamed(context, LoadingScreen.pageRoute);
                       // Navigator.pushReplacementNamed(context, SettingsScreen.pageRoute);
+                      }
                       
                       
                       // GET TESTING ----------
@@ -242,7 +283,7 @@ class _LoginForm extends StatelessWidget {
                     },
               disabledColor: Colors.grey,
               elevation: 0,
-              color: Colors.deepPurple,
+              color: AppTheme.darkBlue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               child: Container(
@@ -253,7 +294,7 @@ class _LoginForm extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

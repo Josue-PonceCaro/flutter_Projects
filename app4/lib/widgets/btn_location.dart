@@ -32,7 +32,7 @@ class BtnCurrentLocation extends StatelessWidget {
             }
 
             mapBloc.moveCamera(userLocation);
-            //mapBloc.add(WillStartFollowingUser());
+            mapBloc.add(WillStartFollowingUser());
           },
         ),
       ),

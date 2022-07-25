@@ -8,7 +8,7 @@ class CardContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       // padding: const EdgeInsets.symmetric(horizontal: 100),
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(20),
       child: Container(
         width: double.infinity,
         // height: 300, // TODO: DELETE
@@ -24,7 +24,7 @@ class CardContainer extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
                 color: Color.fromARGB(31, 180, 92, 92),
-                offset: Offset(0, 10),
-                blurRadius: 15),
+                offset: Offset(0, 0),
+                blurRadius: 0),
           ]);
 }

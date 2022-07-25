@@ -3,6 +3,7 @@ import 'package:app4/screens/login_screen.dart';
 import 'package:app4/screens/welcome_screen.dart';
 import 'package:app4/services/services.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
+import 'package:app4/themes/themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -55,20 +56,22 @@ class MapsApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
-        // initialRoute: WelcomeScreen.pageRoute,
-        // initialRoute: SettingsScreen.pageRoute,
-        initialRoute: LoginScreen.pageRoute,
+        initialRoute: WelcomeScreen.pageRoute,
+        // initialRoute: RestorePasswordScreen.pageRoute,
+        // initialRoute: LoginScreen.pageRoute,
         routes: {
           WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),
           LoadingScreen.pageRoute: (context) => const LoadingScreen(),
+          LoadingInitialScreen.pageRoute: (context) => const LoadingInitialScreen(),
           LoginScreen.pageRoute: (context) => const LoginScreen(),
           RegisterScreen.pageRoute: (context) => const RegisterScreen(),
           SettingsScreen.pageRoute:(context) => const SettingsScreen(),
-          RestoreScreen.pageRoute:(context) => const RestoreScreen(),
           RestorePasswordScreen.pageRoute: (context) =>
               const RestorePasswordScreen(),
         },
+        theme: AppTheme.lightThem,
       ),
+      
     );
   }
 }

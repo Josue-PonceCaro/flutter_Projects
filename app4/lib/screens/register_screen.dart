@@ -1,5 +1,6 @@
 import 'package:app4/providers/providers.dart';
 import 'package:app4/services/auth_service.dart';
+import 'package:app4/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app4/screens/screens.dart';
@@ -16,59 +17,63 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Stack(children: [
         AuthBackground(
+          welcomeText: 'Crear cuenta',
+          descriptionText: 'Ingresa tus datos para empezar.',
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 child: ChangeNotifierProvider(
           create: (registerContext) => AuthFormProvider(),
           child: Column(
             children: [
               const SizedBox(
-                height: 250,
+                height: 200,
               ),
               CardContainer(
                   child: Column(
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Registrarse',
-                    style: TextStyle(color: Colors.black54, fontSize: 40),
-                    //style: Theme.of(context).textTheme.headline4,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // const Text(
+                  //   'Registrarse',
+                  //   style: TextStyle(color: Colors.black54, fontSize: 40),
+                  //   //style: Theme.of(context).textTheme.headline4,
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
                   _LoginForm(),
                   const SizedBox(
                     height: 30,
                   )
                 ],
               )),
-              const SizedBox(
-                height: 50,
-              ),
-              Consumer<AuthFormProvider>(
-                builder: (context, registerForm, _) => TextButton(
-                  onPressed: registerForm.isLoading
-                      ? null
-                      : () {
+              // const SizedBox(
+              //   height: 50,
+              // ),
+              // Consumer<AuthFormProvider>(
+              //   builder: (context, registerForm, _) => TextButton(
+              //     onPressed: registerForm.isLoading
+              //         ? null
+              //         : () {
                         
-                          Navigator.pushReplacementNamed(
-                              context, LoginScreen.pageRoute);
-                        },
-                  style: ButtonStyle(
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.indigo.withOpacity(0.1))),
-                  child: const Text(
-                    'Ya tiene cuenta?',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                  ),
-                ),
-              ),
+              //             Navigator.pushReplacementNamed(
+              //                 context, LoginScreen.pageRoute);
+              //           },
+              //     style: ButtonStyle(
+              //         overlayColor: MaterialStateProperty.all(
+              //             Colors.indigo.withOpacity(0.1))),
+              //     child: const Text(
+              //       'Ya tiene cuenta?',
+              //       style: TextStyle(fontSize: 18, color: Colors.black87),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
-                height: 100,
+                height: 150,
               )
             ],
           ),
@@ -98,7 +103,8 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   labelText: 'Nombre',
                   hintText: 'Maria Jesus',
-                  prefixIcon: Icons.person_pin_circle),
+                  // prefixIcon: Icons.person_pin_circle
+                  ),
               validator: (value) {
                 return InternalValidations.nameValidator(value)
                     ? null
@@ -106,7 +112,7 @@ class _LoginForm extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             TextFormField(
               onChanged: (value) => registerForm.userPhoneNumber = value,
@@ -118,7 +124,8 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   labelText: 'Numero de Celular',
                   hintText: '987654321',
-                  prefixIcon: Icons.phone_android_rounded),
+                  // prefixIcon: Icons.phone_android_rounded
+                  ),
               validator: (value) {
                 return InternalValidations.phoneValidator(value)
                     ? null
@@ -126,7 +133,7 @@ class _LoginForm extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             TextFormField(
               onChanged: (value) => registerForm.userEmail = value,
@@ -137,7 +144,8 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   labelText: 'Correo electrónico',
                   hintText: 'enamil@ext.com',
-                  prefixIcon: Icons.alternate_email_outlined),
+                  // prefixIcon: Icons.alternate_email_outlined
+                  ),
               validator: (value) {
                 return InternalValidations.emailValidator(value)
                     ? null
@@ -145,7 +153,7 @@ class _LoginForm extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             TextFormField(
               onChanged: (value) => registerForm.userPassword = value,
@@ -157,7 +165,7 @@ class _LoginForm extends StatelessWidget {
               decoration: InputDecotations.authInputDecoration(
                   labelText: 'Contrasenha',
                   hintText: '••••••••',
-                  prefixIcon: Icons.password_sharp),
+                  sufixIcon: Icons.remove_red_eye),
               validator: (value) {
                 return InternalValidations.passwordValidator(value)
                     ? null
@@ -165,9 +173,10 @@ class _LoginForm extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             MaterialButton(
+              // onPressed: !registerForm.isValidRegister()
               onPressed: registerForm.isLoading
                   ? null
                   : () async {
@@ -223,9 +232,9 @@ class _LoginForm extends StatelessWidget {
                       }
                       
                     },
-              disabledColor: Colors.grey,
+              disabledColor: AppTheme.gray50,
               elevation: 0,
-              color: Colors.deepPurple,
+              color: AppTheme.darkBlue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               child: Container(

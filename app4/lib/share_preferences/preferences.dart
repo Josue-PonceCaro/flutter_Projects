@@ -14,6 +14,7 @@ class Preferences {
   static bool _isDark = false;
   static bool _isEmailVerified = false;
   static String _firebaseToken = '';
+  static bool _isFirstTime = true;
 
   static void cleanPreferences (){
       userName = '';
@@ -27,6 +28,14 @@ class Preferences {
       isDark = false;
       isEmailVerified = false;
       firebaseToken = '';
+      isFirstTime = true; // TODO: analize this condition
+  }
+    static bool get isFirstTime {
+    return _prefer.getBool('isFirstTime') ?? _isFirstTime;
+  }
+  static set isFirstTime (bool value) {
+    _prefer.setBool('isFirstTime', value);
+    _isFirstTime = value;
   }
   static int  getGenderNumber (String genderString){
     genderString.toLowerCase();
