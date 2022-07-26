@@ -1,5 +1,6 @@
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/screens/login_screen.dart';
+import 'package:app4/screens/register_principal.dart';
 import 'package:app4/screens/welcome_screen.dart';
 import 'package:app4/services/services.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
@@ -68,6 +69,7 @@ class MapsApp extends StatelessWidget {
           SettingsScreen.pageRoute:(context) => const SettingsScreen(),
           RestorePasswordScreen.pageRoute: (context) =>
               const RestorePasswordScreen(),
+          RegisterPrincipalScreen.pageRoute:(context) => RegisterPrincipalScreen(),
         },
         theme: AppTheme.lightThem,
       ),

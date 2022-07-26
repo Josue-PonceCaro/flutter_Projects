@@ -1,3 +1,5 @@
+export 'package:app4/screens/register_principal.dart';
+
 export 'package:app4/screens/loading_initial_screen.dart';
 
 export 'package:app4/screens/settings_screen.dart';

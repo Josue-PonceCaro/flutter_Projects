@@ -31,16 +31,16 @@ class WelcomeBackground extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:  [
-                    const SizedBox(height: 40,),
+                    SizedBox(height: sizeScreen.height*0.05,),
                     Container(
                       padding: EdgeInsets.only(right: 30),
                       alignment: Alignment.bottomRight,
                       width: double.infinity,
                       child: Icon(Icons.near_me, color: AppTheme.lightGreen, size: 80,),
                     ),
-                    const SizedBox(height: 105,),
-                    const Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: 35, fontWeight: FontWeight.w500, ),),
-                    const Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: 85, fontWeight: FontWeight.w900,),),
+                    SizedBox(height: sizeScreen.height*0.05,),
+                    Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: sizeScreen.width*0.07, fontWeight: FontWeight.w500, ),),
+                    Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: sizeScreen.width*0.15, fontWeight: FontWeight.w900,),),
                   ],
                 ),
                 // color: AppTheme.primaryOrange,
@@ -67,7 +67,7 @@ class WelcomeBackground extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: sizeScreen.height * 0.15,),
+                    SizedBox(height: sizeScreen.height * 0.07,),
                     Container(
                       width: double.infinity,
                       child: Row(
@@ -115,7 +115,7 @@ class WelcomeBackground extends StatelessWidget {
                           ],
                       ),
                     ),
-                    SizedBox(height: sizeScreen.height * 0.17,),
+                    SizedBox(height: sizeScreen.height * 0.07,),
                     child,
                   ],
                 ),
@@ -191,8 +191,8 @@ class _CircularPainter extends CustomPainter {
     // path.moveTo(paperWidth * 0.25, paperHeigh * 0.6);
     // path.quadraticBezierTo(paperWidth*0.5, paperHeigh*0.5, paperWidth * 0.75, paperHeigh * 0.6);
 
-    const double initialVal = 150;
-    const double upVal = 75;
+    final double initialVal = size.width*0.3;
+    final double upVal = size.width*0.15;
     for (var i = 0; i < 5; i++) {
       canvas.drawCircle(Offset(paperWidth*0.5,paperHeigh*0.61), initialVal + upVal*i, pencil);
     }

@@ -13,6 +13,13 @@ class AuthFormProvider extends ChangeNotifier{
   int userGender = 0;
   bool isDark = false;
   bool _isLoading = false;
+  bool _isCompleted = false;
+
+  bool get isCompleted => _isCompleted;
+  set isCompleted(bool value) {
+    _isCompleted = value;
+    notifyListeners();
+  }
   
   bool get isLoading => _isLoading;
   set isLoading(bool value) {

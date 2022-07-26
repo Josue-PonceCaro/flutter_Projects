@@ -1,4 +1,3 @@
-import 'package:app4/screens/login_screen.dart';
 import 'package:app4/screens/screens.dart';
 import 'package:app4/share_preferences/preferences.dart';
 import 'package:app4/themes/themes.dart';

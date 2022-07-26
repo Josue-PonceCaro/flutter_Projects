@@ -25,12 +25,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     print('-------------------------');
     print(areaScreen.height);
     print(areaScreen.width);
-    // final registerForm = Provider.of<AuthFormProvider>(context);
     return ChangeNotifierProvider(
       create: (registerContext) => AuthFormProvider(),
       child: Consumer<AuthFormProvider>(
-        builder: (context, registerForm, _) =>
-        Scaffold(
+        builder: (context, registerForm, _) => Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: registerForm.isLoading ? false : true,
             ),
@@ -83,8 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   style: const TextStyle(
                                       color: AppTheme.black),
                                   decoration: InputDecotations
-                                      .authInputDecoration2(
-                                        screenSize: areaScreen,
+                                      .authInputDecoration(
                                     labelText: 'Nombre Completo',
                                     hintText: 'Maria Jesus',
                                     // prefixIcon: Icons.person_pin_circle
@@ -93,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .nameValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Nombre Incorrecto': null;
+                                        : 'Nombre Incorrecto';
                                   },
                                 ),
                                 SizedBox(
@@ -111,8 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   style: const TextStyle(
                                       color: Colors.deepPurple),
                                   decoration: InputDecotations
-                                      .authInputDecoration2(
-                                        screenSize: areaScreen,
+                                      .authInputDecoration(
                                     labelText: 'Correo electrónico',
                                     hintText: 'enamil@ext.com',
                                     // prefixIcon: Icons.alternate_email_outlined
@@ -121,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .emailValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Correo inválido': null;
+                                        : 'Correo inválido';
                                   },
                                 ),
                                 SizedBox(
@@ -141,8 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   style: const TextStyle(
                                       color: Colors.deepPurple),
                                   decoration: InputDecotations
-                                      .authInputDecoration2(
-                                        screenSize: areaScreen,
+                                      .authInputDecoration(
                                     labelText: 'Numero de Celular',
                                     hintText: '987654321',
                                     // prefixIcon: Icons.phone_android_rounded
@@ -151,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .phoneValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ?  'número incorrecto' : null;
+                                        : 'número incorrecto';
                                   },
                                 ),
                                 SizedBox(
@@ -172,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: Colors.deepPurple),
                                   decoration: InputDecoration(
                                     isDense: true, 
-                                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                    contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
                                     hintText: '••••••••',
                                     labelText: 'Contrasenha',
                                     hintStyle: const TextStyle(color: Colors.black26),
@@ -182,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
                                       borderSide: BorderSide(color: AppTheme.black, width: 1),
                                     ),
-                                    suffixIcon: areaScreen.height < 600? null : IconButton(
+                                    suffixIcon:  IconButton(
                                       onPressed: (){
                                         setState(() {
                                           _hidePass =! _hidePass;
@@ -200,7 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .passwordValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Extensión incorrecta' : null;
+                                        : 'Extensión incorrecta';
                                   },
                                 ),
                                 SizedBox(
@@ -370,5 +365,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             )),
       ),
     );
+   
   }
 }
+

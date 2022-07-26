@@ -5,10 +5,12 @@ class WelcomeText extends StatelessWidget {
   final String welcomeText;
   final String descriptionText;
   final double hightSize;
+  final Color welcomeTextColor;
+  final Color descriptionTextColor;
   const WelcomeText({
     Key? key,
     required this.welcomeText,
-    required this.descriptionText, required this.hightSize,
+    required this.descriptionText, required this.hightSize, this.welcomeTextColor = AppTheme.darkBlue, this.descriptionTextColor = AppTheme.black,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class WelcomeText extends StatelessWidget {
             welcomeText,
             style: TextStyle(
                 fontWeight: FontWeight.w900,
-                color: AppTheme.black,
+                color: welcomeTextColor,
                 fontSize: hightSize*0.045),
           ),
         ),
@@ -36,7 +38,7 @@ class WelcomeText extends StatelessWidget {
             descriptionText,
             style: TextStyle(
                 fontWeight: FontWeight.w400,
-                color: AppTheme.black,
+                color:  descriptionTextColor,
                 fontSize: hightSize*0.025),
           ),
         ),
@@ -44,3 +46,4 @@ class WelcomeText extends StatelessWidget {
     );
   }
 }
+

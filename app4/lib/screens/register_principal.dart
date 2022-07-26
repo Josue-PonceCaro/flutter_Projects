@@ -9,15 +9,32 @@ import 'package:app4/ui/input_decorations.dart';
 import 'package:app4/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const String pageRoute = 'Register';
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegisterPrincipalScreen extends StatelessWidget {
+  static String pageRoute = 'RegisterPincipal';
+  const RegisterPrincipalScreen({Key? key}) : super(key: key);
+  
+  @override
+  Widget build(BuildContext context) {
+    final Size areaScreen = MediaQuery.of(context).size;
+    
+    return  ChangeNotifierProvider(
+      create: (registerContext) => AuthFormProvider(),
+      
+      child: areaScreen.height > 600 ? const _RegisterScreen() : Container(),       
+        
+    );
+    
+  }
+}
+class _RegisterScreen extends StatefulWidget {
+  // static const String pageRoute = 'Register';
+  const _RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<_RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<_RegisterScreen> {
   bool _hidePass = true;
   @override
   Widget build(BuildContext context) {
@@ -25,11 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     print('-------------------------');
     print(areaScreen.height);
     print(areaScreen.width);
-    // final registerForm = Provider.of<AuthFormProvider>(context);
-    return ChangeNotifierProvider(
-      create: (registerContext) => AuthFormProvider(),
-      child: Consumer<AuthFormProvider>(
-        builder: (context, registerForm, _) =>
+    final registerForm = Provider.of<AuthFormProvider>(context);
+    return 
         Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: registerForm.isLoading ? false : true,
@@ -93,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .nameValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Nombre Incorrecto': null;
+                                        : 'Nombre Incorrecto';
                                   },
                                 ),
                                 SizedBox(
@@ -121,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .emailValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Correo inválido': null;
+                                        : 'Correo inválido';
                                   },
                                 ),
                                 SizedBox(
@@ -151,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .phoneValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ?  'número incorrecto' : null;
+                                        : 'número incorrecto';
                                   },
                                 ),
                                 SizedBox(
@@ -172,7 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: Colors.deepPurple),
                                   decoration: InputDecoration(
                                     isDense: true, 
-                                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                    contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
                                     hintText: '••••••••',
                                     labelText: 'Contrasenha',
                                     hintStyle: const TextStyle(color: Colors.black26),
@@ -182,7 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
                                       borderSide: BorderSide(color: AppTheme.black, width: 1),
                                     ),
-                                    suffixIcon: areaScreen.height < 600? null : IconButton(
+                                    suffixIcon:  IconButton(
                                       onPressed: (){
                                         setState(() {
                                           _hidePass =! _hidePass;
@@ -200,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     return InternalValidations
                                             .passwordValidator(value)
                                         ? null
-                                        : areaScreen.height > 500 ? 'Extensión incorrecta' : null;
+                                        : 'Extensión incorrecta';
                                   },
                                 ),
                                 SizedBox(
@@ -367,8 +381,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     
                  
               ),
-            )),
-      ),
-    );
+            ));
+     
+   
   }
 }
+
