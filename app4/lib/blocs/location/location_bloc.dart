@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app4/dataTest/map1.dart';
+import 'package:app4/dataTest/pred1.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,6 +24,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         lastKnownLocation: event.newLocation,
         myLocationHistory: [...state.myLocationHistory, event.newLocation],
       ));
+      // state.myLocationHistory.isEmpty ? 
+      // emit(state.copyWith(
+      //   lastKnownLocation: event.newLocation,
+      //   myLocationHistory: [...generatePoint(), event.newLocation],
+      // ))
+      // : 
+      // emit(state.copyWith(
+      //   lastKnownLocation: event.newLocation,
+      //   myLocationHistory: [...state.myLocationHistory, event.newLocation],
+      // ));
 
       // TODO: implement event handler
     });
@@ -54,5 +66,17 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     // TODO: implement close
     stopFollowingUser();
     return super.close();
+  }
+  List<LatLng> generatePoint(){
+    List<LatLng> newPoint = [];
+    for(int i = 0; i < datamapXX.length; i++){
+    // for(int i = 0; i < datamap.length; i++){
+      newPoint.add(LatLng(double.parse(datamapXX[i]['lat_node_1']), double.parse(datamapXX[i]['lon_node_1'])));
+      newPoint.add(LatLng(double.parse(datamapXX[i]['lat_node_2']), double.parse(datamapXX[i]['lon_node_2'])));
+    }
+    print('ENDDD..........');
+    print(datamapXX.length);
+    print('ENDDD.....................');
+    return newPoint;
   }
 }

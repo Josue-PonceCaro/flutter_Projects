@@ -12,9 +12,9 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: const[
           WelcomeBackground(
-            child: Preferences.isFirstTime ? const _WelcomeButton() : Container(),
+            child: _WelcomeButton(),
           ),
         ],
       ),

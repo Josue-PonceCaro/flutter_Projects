@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app4/dataTest/pred1.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/themes/themes.dart';
@@ -18,7 +19,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<OnMapInitializedEvent>(_onInitMap);
     on<WillStopFollowingUser>((event, emit) => emit(state.copyWith(isFollowingUser: false)),);
     on<WillStartFollowingUser>(_onStartFollowing,);
-    on<UpdateUserPolylineEvent>(_onPolilyneNewPoint);
+    on<UpdateUserPolylineEvent>(_onPolilyneNewPointPRO);
+    // on<UpdateUserPolylineEvent>(_onPolilyneNewPoint);
 
     locationBloc.stream.listen((locationState) {
       if (locationState.lastKnownLocation != null) {
@@ -59,6 +61,37 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
     currentPolylines['myRoute'] = myRoute;
     emit(state.copyWith(polylines: currentPolylines));
+  }
+  void _onPolilyneNewPointPRO( UpdateUserPolylineEvent event, Emitter<MapState> emit) {
+    
+    
+    final currentPolylines = Map<String, Polyline>.from(state.polylines);
+    if(currentPolylines.isEmpty){
+      // for(int i = 0; i < 5000; i++){
+      for(int i = 0; i < datamapXX.length/10; i++){
+      // for(int i = 0; i < datamap.length; i++){
+      
+        List<LatLng> newPointX = [];
+        newPointX.add(LatLng(double.parse(datamapXX[i]['lat_node_1']), double.parse(datamapXX[i]['lon_node_1'])));
+        newPointX.add(LatLng(double.parse(datamapXX[i]['lat_node_2']), double.parse(datamapXX[i]['lon_node_2'])));
+        final theColor = Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+        final theRoute = Polyline(
+          polylineId:  PolylineId(datamapXX[i]['id']),
+          color: theColor,
+          // color: Colors.red,
+          width: 5,
+          startCap: Cap.roundCap,
+          endCap: Cap.roundCap,
+          points: newPointX,
+          geodesic: true,
+        );
+
+        currentPolylines[datamapXX[i]['id']] = theRoute;
+      }
+
+      // currentPolylines['myRoute'] = myRoute;
+      emit(state.copyWith(polylines: currentPolylines));
+    }
   }
 
   void moveCamera(LatLng newLocation) {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
-  final String _baseUrl_Mikel = '0db2-190-42-109-118.ngrok.io';
+  final String _baseUrl_Mikel = '7451-190-42-109-118.ngrok.io';
   final String _baseUrl_FireBase = 'identitytoolkit.googleapis.com';
   final String _firebaseToken = 'AIzaSyAmbP60XAtmROaANoFkcx4Rv2V45quwtzs';
   // final String _firebaseToken = 'AIzaSyAs1yaOZNmEl5M63ero5XMJyQSwhm1wA_M';
@@ -201,6 +201,7 @@ class AuthService extends ChangeNotifier {
     try {
       final resp = await http.put(url, headers: head, body: json.encode(authData));
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
+      print(decodeResp);
       if (decodeResp.containsKey('success')) {
         return true;
       } else {

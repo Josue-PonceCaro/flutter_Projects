@@ -29,7 +29,7 @@ class Preferences {
     isDark = false;
     isEmailVerified = false;
     firebaseToken = '';
-    isFirstTime = true; // TODO: analize this condition
+    // isFirstTime = true; // TODO: analize this condition
     areTermsAccepted = false;
     willRemenberData = false;
   }

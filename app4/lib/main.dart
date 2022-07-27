@@ -1,6 +1,5 @@
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/screens/login_screen.dart';
-import 'package:app4/screens/register_principal.dart';
 import 'package:app4/screens/welcome_screen.dart';
 import 'package:app4/services/services.dart';
 import 'package:app4/share_preferences/share_preferences.dart';
@@ -57,9 +56,11 @@ class MapsApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
-        initialRoute: WelcomeScreen.pageRoute,
-        // initialRoute: RestorePasswordScreen.pageRoute,
+        // initialRoute: WelcomeScreen.pageRoute,
+        initialRoute: SplashScreen.pageRoute,
+        
         // initialRoute: LoginScreen.pageRoute,
+        // initialRoute: SettingsScreen.pageRoute,
         routes: {
           WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),
           LoadingScreen.pageRoute: (context) => const LoadingScreen(),
@@ -69,7 +70,10 @@ class MapsApp extends StatelessWidget {
           SettingsScreen.pageRoute:(context) => const SettingsScreen(),
           RestorePasswordScreen.pageRoute: (context) =>
               const RestorePasswordScreen(),
-          RegisterPrincipalScreen.pageRoute:(context) => RegisterPrincipalScreen(),
+
+          Loginx.pageRoute:(context) => const Loginx(),
+          Registerx.pageRoute:(context) => const Registerx(),
+          SplashScreen.pageRoute:(context) => const SplashScreen(),
         },
         theme: AppTheme.lightThem,
       ),
