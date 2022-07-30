@@ -14,9 +14,8 @@ class MapView extends StatelessWidget {
   Widget build(BuildContext context) {
     final mapBloc = BlocProvider.of<MapBloc>(context);
     final CameraPosition inicialCameraPosition = CameraPosition(
-        bearing: 192.8334901395799, target: inicialLocation, zoom: 15);
+        bearing: 90, target: inicialLocation, zoom: 16.5, tilt: 90);
     final size = MediaQuery.of(context).size;
- 
     return SizedBox(
         width: size.width,
         height: size.height,
@@ -27,14 +26,33 @@ class MapView extends StatelessWidget {
           },
           child: GoogleMap(
             initialCameraPosition: inicialCameraPosition,
-            myLocationEnabled: true,
+            myLocationEnabled: false,
             compassEnabled: false,
             zoomControlsEnabled: false,
             myLocationButtonEnabled: false,
+            onCameraMove: (CameraPosition cameraPosition) {
+              // print('camera details -------');
+              // if(
+              //   mapBloc.state.lastCameraPosition.target.latitude != cameraPosition.target.latitude
+              //   // && mapBloc.state.lastCameraPosition.target.longitude != cameraPosition.target.longitude
+              //   && mapBloc.state.lastCameraPosition.zoom != cameraPosition.zoom
+              // ){
+
+              print(cameraPosition.zoom);
+              print(cameraPosition.tilt);
+              print(cameraPosition.bearing); // Orientation
+              print(cameraPosition.target);
+       
+              mapBloc.add(DrawPolylinesFromZoneEvent(
+                cameraPosition
+              ));
+              
+            },
             onMapCreated: (controller) =>
                 mapBloc.add(OnMapInitializedEvent(controller)),
             polylines: polylines,
           ),
-        ));
+        ),
+        );
   }
 }

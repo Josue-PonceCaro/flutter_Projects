@@ -31,16 +31,22 @@ class WelcomeBackground extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:  [
-                    SizedBox(height: sizeScreen.height*0.05,),
-                    Container(
-                      padding: EdgeInsets.only(right: 30),
-                      alignment: Alignment.bottomRight,
-                      width: double.infinity,
-                      child: Icon(Icons.near_me, color: AppTheme.lightGreen, size: 80,),
+                    Expanded(
+                      child: SizedBox(height: sizeScreen.height*0.05,)
+                      ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 30),
+                        alignment: Alignment.bottomRight,
+                        width: double.infinity,
+                        child: Icon(Icons.near_me, color: AppTheme.lightGreen, size: 80,),
+                      ),
                     ),
-                    SizedBox(height: sizeScreen.height*0.05,),
-                    Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: sizeScreen.width*0.07, fontWeight: FontWeight.w500, ),),
-                    Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: sizeScreen.width*0.15, fontWeight: FontWeight.w900,),),
+                    Expanded(child: SizedBox(height: sizeScreen.height*0.05,)),
+                    Expanded(child: Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: sizeScreen.width*0.07, fontWeight: FontWeight.w500, ),)),
+                    Expanded(
+                      flex: 2,
+                      child: Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: sizeScreen.width*0.15, fontWeight: FontWeight.w900,),)),
                   ],
                 ),
                 // color: AppTheme.primaryOrange,

@@ -1,4 +1,5 @@
 import 'package:app4/blocs/blocs.dart';
+import 'package:app4/providers/providers.dart';
 import 'package:app4/screens/login_screen.dart';
 import 'package:app4/screens/welcome_screen.dart';
 import 'package:app4/services/services.dart';
@@ -52,14 +53,15 @@ class MapsApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => AuthFormProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
         // initialRoute: WelcomeScreen.pageRoute,
-        initialRoute: SplashScreen.pageRoute,
+        // initialRoute: SplashScreen.pageRoute,
         
-        // initialRoute: LoginScreen.pageRoute,
+        initialRoute: LoadingScreen.pageRoute,
         // initialRoute: SettingsScreen.pageRoute,
         routes: {
           WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),

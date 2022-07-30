@@ -31,8 +31,8 @@ class BtnCurrentLocation extends StatelessWidget {
               return;
             }
 
-            mapBloc.moveCamera(userLocation);
-            mapBloc.add(WillStartFollowingUser());
+            // mapBloc.moveCamera(userLocation); // THISCOMENT THIS IF COMMENTS THE OTHER LINE
+            mapBloc.add(WillStartFollowingUser()); // This includes the movement Camera
           },
         ),
       ),

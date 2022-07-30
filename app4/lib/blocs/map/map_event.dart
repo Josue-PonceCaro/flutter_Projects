@@ -22,3 +22,8 @@ class UpdateUserPolylineEvent extends MapEvent {
   const UpdateUserPolylineEvent(this.userLocation);
 
 }
+
+class DrawPolylinesFromZoneEvent extends MapEvent {
+  final CameraPosition cameraPosition;
+  const DrawPolylinesFromZoneEvent(this.cameraPosition);
+}

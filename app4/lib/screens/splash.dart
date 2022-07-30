@@ -22,8 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 1500), () { });
-    if (!Preferences.isFirstTime )
-    Navigator.pushReplacementNamed(context, LoadingInitialScreen.pageRoute);
+    if (!Preferences.isFirstTime ) 
+    {
+      Navigator.pushReplacementNamed(context, LoadingInitialScreen.pageRoute);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -31,10 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           WelcomeBackground(
-            child: Preferences.isFirstTime ? const _WelcomeButton() : Container(),
+            child: Container(),
+            // child: Preferences.isFirstTime ? const _WelcomeButton() : Container(),
              )
         ],
-      )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Preferences.isFirstTime ? const _WelcomeButton() : Container(),
     );
   }
 }

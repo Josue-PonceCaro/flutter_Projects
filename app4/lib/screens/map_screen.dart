@@ -57,7 +57,7 @@ class _MapScreenState extends State<MapScreen> {
         );
       },
     ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     floatingActionButton: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: const [
