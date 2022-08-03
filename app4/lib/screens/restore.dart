@@ -9,7 +9,7 @@ import 'package:app4/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class Restorex extends StatelessWidget {
-  static const String pageRoute = 'Restore';
+  static const String pageRoute = 'Restorex';
   const Restorex({Key? key}) : super(key: key);
 
   @override

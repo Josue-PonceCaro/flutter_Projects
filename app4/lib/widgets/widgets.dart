@@ -1,3 +1,5 @@
+export 'package:app4/widgets/searchbar.dart';
+
 export 'package:app4/widgets/general_widgets.dart';
 
 export 'package:app4/widgets/auth_widgets.dart';

@@ -3,17 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:app4/services/principal_config.dart';
 class AuthService extends ChangeNotifier {
-  final String _baseUrl_Mikel = '7451-190-42-109-118.ngrok.io';
-  final String _baseUrl_FireBase = 'identitytoolkit.googleapis.com';
-  final String _firebaseToken = 'AIzaSyAmbP60XAtmROaANoFkcx4Rv2V45quwtzs';
-  // final String _firebaseToken = 'AIzaSyAs1yaOZNmEl5M63ero5XMJyQSwhm1wA_M';
+
 
   Future<String> lookUpUserF(String idTok) async {
     final Map<String, dynamic> authData = {'idToken': idTok};
     final url = Uri.https(
-        _baseUrl_FireBase, '/v1/accounts:lookup', {'key': _firebaseToken});
+        PrincipalConfig.baseUrlFireBase, '/v1/accounts:lookup', {'key': PrincipalConfig.firebaseToken});
     final resp = await http.post(url, body: json.encode(authData));
     print(resp);
     print(resp.body);
@@ -27,8 +24,8 @@ class AuthService extends ChangeNotifier {
       'password': password,
       'returnSecureToken': true,
     };
-    final url = Uri.https(_baseUrl_FireBase, '/v1/accounts:signInWithPassword',
-        {'key': _firebaseToken});
+    final url = Uri.https(PrincipalConfig.baseUrlFireBase, '/v1/accounts:signInWithPassword',
+        {'key': PrincipalConfig.firebaseToken});
     try {
       final resp = await http.post(url, body: json.encode(authData));
       print('-----------SINCE HERE----------------');
@@ -69,8 +66,8 @@ class AuthService extends ChangeNotifier {
     // {"error":{"dd":["Unknown field."]}}
     // {"error":"Error while calling Auth service (INVALID_PHONE_NUMBER ). TOO_SHORT"}
     // {"error":"The user with the provided email already exists (EMAIL_EXISTS)."}
-    // final url = Uri.https(_baseUrl_FireBase, '/v1/accounts:signUp', {'key': _firebaseToken});
-    final url = Uri.https(_baseUrl_Mikel, '/auth/register');
+    // final url = Uri.https(_baseUrl_FireBase, '/v1/accounts:signUp', {'key': PrincipalConfig.firebaseToken});
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/register');
     try{
       final resp = await http.post(url, headers: head, body: json.encode(authData));
 
@@ -94,7 +91,7 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
     };
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user');
     try {
       final resp = await http.get(url, headers: head);
       // {"birthdate":"01-01-1900",
@@ -129,7 +126,7 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
     };
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user/email-verified');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user/email-verified');
     try {
       final resp = await http.get(url, headers: head);
       print('Verified EMAIL-------');
@@ -155,7 +152,7 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
     };
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user');
     try {
       final resp = await http.delete(url, headers: head);
       print('Delete Account-------');
@@ -197,7 +194,7 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.authorizationHeader: idToken,
       HttpHeaders.contentTypeHeader: 'application/json'
       }; 
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user');
     try {
       final resp = await http.put(url, headers: head, body: json.encode(authData));
       final Map<String, dynamic> decodeResp = json.decode(resp.body);
@@ -220,7 +217,7 @@ class AuthService extends ChangeNotifier {
       HttpHeaders.contentTypeHeader: 'application/json'
       }; 
 
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user/verify-email');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user/verify-email');
     try {
       final resp = await http.put(url,headers: head);
     // {"success":"A verification link will be sent to the email"}
@@ -239,7 +236,7 @@ class AuthService extends ChangeNotifier {
     final Map<String, dynamic> authData = {'email': email};
     final Map<String, String> head = {HttpHeaders.contentTypeHeader: 'application/json'}; 
 
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user/reset-password');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user/reset-password');
     try{
 
       final resp = await http.put(url,headers: head, body: json.encode(authData));
@@ -259,7 +256,7 @@ class AuthService extends ChangeNotifier {
       }; 
     final Map<String, dynamic> authData = {'password': password};
 
-    final url = Uri.https(_baseUrl_Mikel, '/auth/user/change-password');
+    final url = Uri.https(PrincipalConfig.baseUrl, '/auth/user/change-password');
     try {
       final resp = await http.put(url,headers: head, body: json.encode(authData));
       final Map<String, dynamic> decodeResp = json.decode(resp.body);

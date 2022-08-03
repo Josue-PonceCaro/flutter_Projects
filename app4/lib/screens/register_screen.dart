@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app4/providers/providers.dart';
+import 'package:app4/screens/login_screen.dart';
 import 'package:app4/services/auth_service.dart';
 import 'package:app4/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: registerForm.isLoading ? false : true,
+              leading: registerForm.isLoading ? Container() : IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, LoginScreen.pageRoute);
+                },
+                 ),
             ),
             body: 
 

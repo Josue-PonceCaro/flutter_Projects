@@ -17,6 +17,5 @@ class LoadingInitialScreen extends StatelessWidget {
       // const SettingsScreen() : 
       const LoginScreen()
       );
-    
   }
 }

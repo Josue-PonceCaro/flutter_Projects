@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class Loginx extends StatefulWidget {
-  static const String pageRoute = 'Login';
+  static const String pageRoute = 'Loginx';
   const Loginx({Key? key}) : super(key: key);
 
   @override

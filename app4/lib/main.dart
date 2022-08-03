@@ -54,14 +54,16 @@ class MapsApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
         ChangeNotifierProvider(create: (_) => AuthFormProvider()),
+        ChangeNotifierProvider(create: (_) => MapService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Maps App',
         // initialRoute: WelcomeScreen.pageRoute,
-        // initialRoute: SplashScreen.pageRoute,
+        initialRoute: SplashScreen.pageRoute,
+        // initialRoute: TileBuilderPage.route,
         
-        initialRoute: LoadingScreen.pageRoute,
+        // initialRoute: LoadingScreen.pageRoute,
         // initialRoute: SettingsScreen.pageRoute,
         routes: {
           WelcomeScreen.pageRoute:(context) => const WelcomeScreen(),
@@ -76,6 +78,7 @@ class MapsApp extends StatelessWidget {
           Loginx.pageRoute:(context) => const Loginx(),
           Registerx.pageRoute:(context) => const Registerx(),
           SplashScreen.pageRoute:(context) => const SplashScreen(),
+          TileBuilderPage.route:(context) => const TileBuilderPage(),
         },
         theme: AppTheme.lightThem,
       ),

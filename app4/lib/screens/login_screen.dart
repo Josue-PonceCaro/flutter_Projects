@@ -270,8 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 onPressed: loginFomr.isLoading
                                                     ? null
                                                     : () {
-                                                        Navigator.pushNamed(context, RegisterScreen.pageRoute);
-                                                        // Navigator.pushReplacementNamed(context, RegisterScreen.pageRoute);
+                                                        // Navigator.pushNamed(context, RegisterScreen.pageRoute);
+                                                        Navigator.pushReplacementNamed(context, RegisterScreen.pageRoute);
                                                       },
                                                 style: ButtonStyle(
                                                     overlayColor: MaterialStateProperty.all(

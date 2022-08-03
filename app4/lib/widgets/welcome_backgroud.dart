@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:app4/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -17,196 +17,72 @@ class WelcomeBackground extends StatelessWidget {
             color: AppTheme.darkBlue,
             width: double.infinity,
             height: double.infinity,
-            child: CustomPaint(
-              painter: _CircularPainter()),
           ),
-          Column(
-            children: [
-              Container(
-                alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.only(left: 10, top: 40),
-                height: sizeScreen.height * 0.5,
-                width: double.infinity,
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  [
-                    Expanded(
-                      child: SizedBox(height: sizeScreen.height*0.05,)
-                      ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(right: 30),
-                        alignment: Alignment.bottomRight,
-                        width: double.infinity,
-                        child: Icon(Icons.near_me, color: AppTheme.lightGreen, size: 80,),
-                      ),
+          Container(
+            width: double.infinity,
+            height: sizeScreen.height*0.7,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                 Expanded(child: SizedBox(height: sizeScreen.height*0.05,)),
+                 Expanded(
+                   child: Image.asset(
+                      'assets/logos/logoLimaWhite.png',
+                      width: sizeScreen.width*0.4,
+                      // height: width*0.05,
                     ),
-                    Expanded(child: SizedBox(height: sizeScreen.height*0.05,)),
-                    Expanded(child: Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: sizeScreen.width*0.07, fontWeight: FontWeight.w500, ),)),
-                    Expanded(
-                      flex: 2,
-                      child: Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: sizeScreen.width*0.15, fontWeight: FontWeight.w900,),)),
-                  ],
-                ),
-                // color: AppTheme.primaryOrange,
-              ),
-              Container(
-                height: sizeScreen.height * 0.5,
-                width: double.infinity,
-                color: AppTheme.darkBlue,
-                child: Column(
-                  children: [
-                
-                    Padding(
-                      padding:  const EdgeInsets.only(left: 10, right: 10),
-                      child: RichText(text: 
-                        const TextSpan(
-                          style:  TextStyle(
-                          fontSize: 18,
-                          color: AppTheme.white,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(text: '¡Únete!', style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: ' y conoce en tiempo real el estado del aire que respiras, mientras te diviertes al aire libre.')
-                          ]
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: sizeScreen.height * 0.07,),
-                    Container(
+                 ),
+                 Expanded(child: SizedBox(height: sizeScreen.height*0.05,)),
+                 Expanded(
+                  flex: 3,
+                   child: Image.asset(
+                      'assets/generalPics/worldFull.png',
                       width: double.infinity,
+                      // height: width*0.05,
+                    ),
+                 ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: sizeScreen.width*0.1),
                       child: Row(
-                        
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const[
-                          Icon(Icons.nordic_walking, color: AppTheme.white,),
-                          SizedBox(width: 20,),
-                          Icon(Icons.pedal_bike, color: AppTheme.white,),
-                          SizedBox(width: 20,),
-                          Icon(Icons.directions_run, color: AppTheme.white,),
-                          SizedBox(width: 115,),
+                        children: [
+                          Text('respira', style: TextStyle(height: 1, color: AppTheme.white, fontSize: sizeScreen.width*0.07, fontWeight: FontWeight.w500, ),),
                         ],
                       ),
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children:  const [
-                          
-                         
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                          _SmallLine(),
-                           SizedBox(width: 5,),
-                           _SmallBol(),
-                          ],
-                      ),
+                    
                     ),
-                    SizedBox(height: sizeScreen.height * 0.07,),
-                    child,
-                  ],
-                ),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: sizeScreen.width*0.1),
+                      child: Row(
+                        children: [
+                          Text('limpio', style: TextStyle(height: 1, color: AppTheme.primaryOrange, fontSize: sizeScreen.width*0.18, fontWeight: FontWeight.w900,),),
+                        ],
+                      ),
+                    )),
+                ],
+              ),
+            ),
           ),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: double.infinity,
+                height: sizeScreen.height*0.7,
+              ),
+              child,
             ],
           ),
-          
+
         ],
       ),
     );
   }
 }
 
-class _SmallBol extends StatelessWidget {
-  const _SmallBol({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(right: 10),
-      height: 20,
-      width: 10,
-      decoration:  const BoxDecoration(
-          color: AppTheme.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            bottomLeft: Radius.circular(10)
-          )
-        ),
-                        
-    );
-  }
-}
-
-class _SmallLine extends StatelessWidget {
-  const _SmallLine({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(right: 10),
-      height: 3.5,
-      width: 15,
-      decoration:  const BoxDecoration(
-          color: AppTheme.white,
-          borderRadius: BorderRadius.all(Radius.circular(10))
-          
-        ),
-                        
-    );
-  }
-}
-
-
-class _CircularPainter extends CustomPainter {
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final double paperHeigh = size.height;
-    final double paperWidth = size.width;
-    final pencil = Paint();
-
-    // Properties
-
-    pencil.color = AppTheme.gray80;
-    pencil.style = PaintingStyle.stroke;
-    pencil.strokeWidth = 1.5;
-    final path = Path();
-    // path.moveTo(paperWidth * 0.25, paperHeigh * 0.6);
-    // path.quadraticBezierTo(paperWidth*0.5, paperHeigh*0.5, paperWidth * 0.75, paperHeigh * 0.6);
-
-    final double initialVal = size.width*0.3;
-    final double upVal = size.width*0.15;
-    for (var i = 0; i < 5; i++) {
-      canvas.drawCircle(Offset(paperWidth*0.5,paperHeigh*0.61), initialVal + upVal*i, pencil);
-    }
-
-    canvas.drawPath(path, pencil);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-
-}

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:app4/dataTest/pred1.dart';
+import 'package:app4/share_preferences/share_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:app4/blocs/blocs.dart';
 import 'package:app4/themes/themes.dart';
@@ -14,6 +15,7 @@ part 'map_event.dart';
 part 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
+  
   final LocationBloc locationBloc;
   GoogleMapController? _mapController;
 
@@ -47,8 +49,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   void _onInitMap(OnMapInitializedEvent event, Emitter<MapState> emit) {
     _mapController = event.controller;
-    _mapController!.setMapStyle(jsonEncode(interfaceMap));
-    // _mapController!.setMapStyle(jsonEncode(shadesGrey));
+    _mapController!.setMapStyle(jsonEncode(MapThemes.simpleMap));
     emit(state.copyWith(isMapInitialized: true));
   }
 
@@ -81,16 +82,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       changeTild(event.cameraPosition);
       emit(state.copyWith(lastCameraPosition: event.cameraPosition));
     }
-    if (initConditionLat > 0.001 || initConditionLon > 0.001){
+    const double limitMin = 12;
+    const double limitMax = 20;
+    if (initConditionLat > 0.002 || initConditionLon > 0.002){
 
 
-      if(event.cameraPosition.zoom > 15 && event.cameraPosition.zoom < 20) {
+      if(event.cameraPosition.zoom > limitMin && event.cameraPosition.zoom < limitMax) {
 
         // final currentPolylines = Map<String, Polyline>.from(state.polylines);
         double cosVal = math.cos(math.pi*event.cameraPosition.bearing/180);
         double sinVal = math.sin(math.pi*event.cameraPosition.bearing/180);
-        double hightSum = 0.011-0.002*(event.cameraPosition.zoom - 15); // 0.009 Must convert to global variable , will change acording of a screen
-        double widthSum = 0.008-0.001*(event.cameraPosition.zoom - 15); // 0.005 same for this
+        double hightSum = 0.011-0.002*(event.cameraPosition.zoom - limitMin); // 0.009 Must convert to global variable , will change acording of a screen
+        double widthSum = 0.008-0.001*(event.cameraPosition.zoom - limitMin); // 0.005 same for this
         double toLat = hightSum*cosVal - widthSum*sinVal;
         toLat = toLat > 0 ? -toLat : toLat;
         double toLon = widthSum*cosVal - hightSum*sinVal;
@@ -104,44 +107,96 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
 
           // for(int i = 0; i < 5000; i++){
-          for(int i = 0; i < datamapXX.length/10-1; i++){
+          List<LatLng> newPointX = [];
+          double p10Compare = 0;
+          int widthLine = 0;
+          for(int i = 0; i < event.points.length/1-1; i++){
             
-            double lat1 = double.parse(datamapXX[i]['lat_node_1']);
-            double lon1 = double.parse(datamapXX[i]['lon_node_1']);
-            double lat2 = double.parse(datamapXX[i]['lat_node_2']);
-            double lon2 = double.parse(datamapXX[i]['lon_node_2']);
+            double lon1 = event.points[i]['lon_node_1'];
+            double lat1 = event.points[i]['lat_node_1'];
+            double lat2 = event.points[i]['lat_node_2'];
+            double lon2 = event.points[i]['lon_node_2'];
+            // double lat1 = double.parse(event.points[i]['lat_node_1']);
+            // double lon1 = double.parse(event.points[i]['lon_node_1']);
+            // double lat2 = double.parse(event.points[i]['lat_node_2']);
+            // double lon2 = double.parse(event.points[i]['lon_node_2']);
             if (
-              lat1 > latMin && lat1 < latMax && lon1 > lonMin && lon1 < lonMax || 
-              lat2 > latMin && lat2 < latMax && lon2 > lonMin && lon2 < lonMax
+              true
+              // lat1 > latMin && lat1 < latMax && lon1 > lonMin && lon1 < lonMax || 
+              // lat2 > latMin && lat2 < latMax && lon2 > lonMin && lon2 < lonMax
               
               ){
               
-              List<LatLng> newPointX = [];
-              newPointX.add(LatLng(lat1, lon1 ));
-              newPointX.add(LatLng(lat2, lon2 ));
-              final Color theColor;
-              if(datamapXX[i]['PM10_predicted'] < InkaValues.pm10Buena){
-                theColor = InkaValues.inkaColorBuena;
-              } else if(datamapXX[i]['PM10_predicted'] < InkaValues.pm10Regular){
-                theColor = InkaValues.inkaColorRegular;
-              } else if(datamapXX[i]['PM10_predicted'] < InkaValues.pm10Mala){
-                theColor = InkaValues.inkaColorMala;
-              } else{
-                theColor = InkaValues.inkaColorMuyMala;
-              } 
               
-              final theRoute = Polyline(
-                polylineId:  PolylineId(datamapXX[i]['id']),
-                color: theColor,
-                // color: Colors.red,
-                width: 5,
-                startCap: Cap.roundCap,
-                endCap: Cap.roundCap,
-                points: newPointX,
-                geodesic: true,
-              );
+              newPointX.add(LatLng(lat1, lon1 ));
 
-              currentPolylines[datamapXX[i]['id']] = theRoute;
+              p10Compare = event.points[i]['PM10_predicted'] - event.points[i+1]['PM10_predicted'];
+              p10Compare > 0 ? p10Compare : - p10Compare;
+              if(
+                event.points[i]["name"] != event.points[i+1]["name"] ||
+                event.points[i]["lat_node_2"] != event.points[i+1]["lat_node_1"] ||
+                event.points[i]["lon_node_2"] != event.points[i+1]["lon_node_1"] ||
+                p10Compare > 1               
+              ){ //x
+
+
+                newPointX.add(LatLng(lat2, lon2 ));
+                final Color theColor;
+                if(event.points[i]['PM10_predicted'] < InkaValues.pm10Buena){
+                  theColor = InkaValues.inkaColorBuena;
+                  widthLine = MapPreferences.polylineWidthGood;
+                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Regular){
+                  theColor = InkaValues.inkaColorRegular;
+                  widthLine = MapPreferences.polylineWidthRegular;
+                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Mala){
+                  theColor = InkaValues.inkaColorMala;
+                  widthLine = MapPreferences.polylineWidthBad;
+                } else{
+                  theColor = InkaValues.inkaColorMuyMala;
+                  widthLine = MapPreferences.polylineWidthTooBad;
+                } 
+                final theRoute = Polyline(
+                  polylineId:  PolylineId(event.points[i]['id']),
+                  color: theColor,
+                  // color: Colors.red,
+                  width: widthLine,
+                  startCap: Cap.roundCap,
+                  endCap: Cap.roundCap,
+                  points: newPointX,
+                  geodesic: true,
+                );
+                currentPolylines[event.points[i]['id']] = theRoute;
+                newPointX = [];
+              } //x
+            } else if(newPointX.length >0){
+              
+                newPointX.add(LatLng(lat1, lon1 ));
+                final Color theColor;
+                if(event.points[i]['PM10_predicted'] < InkaValues.pm10Buena){
+                  theColor = InkaValues.inkaColorBuena;
+                  widthLine = 4;
+                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Regular){
+                  theColor = InkaValues.inkaColorRegular;
+                  widthLine = 5;
+                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Mala){
+                  theColor = InkaValues.inkaColorMala;
+                  widthLine = 6;
+                } else{
+                  theColor = InkaValues.inkaColorMuyMala;
+                  widthLine = 7;
+                } 
+                final theRoute = Polyline(
+                  polylineId:  PolylineId(event.points[i]['id']),
+                  color: theColor,
+                  // color: Colors.red,
+                  width: widthLine,
+                  startCap: Cap.roundCap,
+                  endCap: Cap.roundCap,
+                  points: newPointX,
+                  geodesic: true,
+                );
+                currentPolylines[event.points[i]['id']] = theRoute;
+                newPointX = [];
             }
             
           }

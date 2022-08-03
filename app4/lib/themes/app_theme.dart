@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
 
+  
+
 
   // Brand colors
   static const primaryBlue   = Color.fromRGBO(26, 74, 132, 1);
