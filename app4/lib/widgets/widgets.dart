@@ -1,3 +1,7 @@
+export 'package:app4/widgets/side_menu.dart';
+
+export 'package:app4/widgets/manual_marker.dart';
+
 export 'package:app4/widgets/searchbar.dart';
 
 export 'package:app4/widgets/general_widgets.dart';

@@ -48,20 +48,21 @@ class _MapScreenState extends State<MapScreen> {
       _tileOverlay = tileOverlay;
     });
   }
-
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     final Set<TileOverlay> overlays = <TileOverlay>{
       if (_tileOverlay != null) _tileOverlay!,
     };
     _addTileOverlay();
-    return Scaffold(body: BlocBuilder<LocationBloc, LocationState>(
+
+    return Scaffold(
+      key: _globalKey,
+      body: BlocBuilder<LocationBloc, LocationState>(
       builder: (context, locationstate) {
         if (locationstate.lastKnownLocation == null) {
           return const Center(child: Text('Cargando el mapa...'));
         }
-
-   
         return BlocBuilder<MapBloc, MapState>(
           builder: (context, mapState) {
             return SingleChildScrollView(
@@ -73,6 +74,18 @@ class _MapScreenState extends State<MapScreen> {
                       onverlay: overlays,
                       ),
                       const SearchBar(),
+                      const ManualMarker(),
+                      Center(
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.list,
+                            size: 40,
+                            ),
+                          onPressed: () {
+                            print('oPen DRAWER....');
+                            _globalKey.currentState?.openDrawer();
+                          }, ),
+                      ),
                     ],
                   ),
                 );
@@ -80,6 +93,7 @@ class _MapScreenState extends State<MapScreen> {
         );
       },
     ),
+    drawer: const SideMenu(),
     floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     floatingActionButton: Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -100,7 +114,7 @@ class _MapScreenState extends State<MapScreen> {
 class _DebugTileProvider implements TileProvider {
   _DebugTileProvider() {
     boxPaint.isAntiAlias = true;
-    boxPaint.color = Colors.transparent;
+    boxPaint.color = Colors.green;
     //boxPaint.strokeWidth = 2.0;
     boxPaint.style = PaintingStyle.stroke;
   }
@@ -115,9 +129,8 @@ class _DebugTileProvider implements TileProvider {
 
   @override
   Future<Tile> getTile(int x, int y, int? zoom) async {
-    print("==============xxxxxx   getTile currentZoom $zoom");
-    print("==============xxxxxx   getTile current x $x");
-    print("==============xxxxxx   getTile current Y $y");
+    print("====Tile info zoom: $zoom - x: $x -y: $y");
+   
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder);
     final paint = Paint()..color = Colors.red.withOpacity(0.3);
@@ -137,9 +150,7 @@ class _DebugTileProvider implements TileProvider {
         .then((ui.Image image) =>
         image.toByteData(format: ui.ImageByteFormat.png))
         .then((ByteData? byteData) => byteData!.buffer.asUint8List());
-    print('..........END TILESSSSSS 1..........');
-    print('..........END TILESSSSSS 2..........');
-    print('..........END TILESSSSSS 3..........');
+    print('====Tile info END TILESSSSSS 1..........');
     return Tile(width, height, byteData);
   }
 }

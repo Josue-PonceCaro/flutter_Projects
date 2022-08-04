@@ -28,3 +28,42 @@ class BrandingQaira extends StatelessWidget {
     );
   }
 }
+
+class BrandingLimaWhite extends StatelessWidget {
+  final double width;
+  const BrandingLimaWhite({
+    Key? key, required this.width,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/logos/logoLimaWhite.png',
+          width: width*0.1,
+          // height: width*0.05,
+        )
+      ],
+    );
+  }
+}
+class BrandingLima extends StatelessWidget {
+  final double width;
+  const BrandingLima({
+    Key? key, required this.width,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/logos/logoLima.png',
+          width: width*0.4,
+          // height: width*0.05,
+        )
+      ],
+    );
+  }
+}
