@@ -1,3 +1,5 @@
+export 'package:app4/widgets/btn_settings.dart';
+
 export 'package:app4/widgets/side_menu.dart';
 
 export 'package:app4/widgets/manual_marker.dart';
@@ -15,4 +17,5 @@ export 'package:app4/widgets/card_container.dart';
 
 export 'package:app4/widgets/btn_follow_user.dart';
 export 'package:app4/widgets/btn_location.dart';
+
 

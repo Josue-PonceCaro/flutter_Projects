@@ -5,9 +5,6 @@ export 'package:app4/screens/splash.dart';
 
 export 'package:app4/widgets/welcome_backgroud.dart';
 
-export 'package:app4/screens/register.dart';
-
-export 'package:app4/screens/login.dart';
 
 export 'package:app4/screens/loading_initial_screen.dart';
 

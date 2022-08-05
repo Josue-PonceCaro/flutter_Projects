@@ -23,7 +23,7 @@ class BtnFollowUser extends StatelessWidget {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, SettingsScreen.pageRoute);
+                // Navigator.pushNamed(context, SettingsScreen.pageRoute);
                 // mapBloc.add(WillStartFollowingUser());
                 // TODO:
               },

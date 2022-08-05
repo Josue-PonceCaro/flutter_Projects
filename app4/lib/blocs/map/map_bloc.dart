@@ -28,6 +28,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     on<DrawPolylinesFromZoneEvent>(_onDrawingPolylinesFromZone);
 
+    on<DrawMarkersFromZoneEvent>(_onDrawingMarkersFromZone);
 
     locationBloc.stream.listen((locationState) {
       if (locationState.lastKnownLocation != null) {
@@ -70,144 +71,97 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentPolylines['myRoute'] = myRoute;
     emit(state.copyWith(polylines: currentPolylines));
   }
-  void _onDrawingPolylinesFromZone(DrawPolylinesFromZoneEvent event, Emitter<MapState> emit) {
-    
-    final Map<String, Polyline>currentPolylines = {};
-    double initConditionLat = event.cameraPosition.target.latitude - state.lastCameraPosition.target.latitude;
-    double initConditionLon = event.cameraPosition.target.longitude - state.lastCameraPosition.target.longitude;
 
-    initConditionLat = initConditionLat >= 0 ? initConditionLat : -initConditionLat;
-    initConditionLon = initConditionLon >= 0 ? initConditionLon : -initConditionLon;
-    if(state.lastCameraPosition.zoom != event.cameraPosition.zoom) {
-      changeTild(event.cameraPosition);
-      emit(state.copyWith(lastCameraPosition: event.cameraPosition));
+  void _onDrawingMarkersFromZone(DrawMarkersFromZoneEvent event, Emitter<MapState> emit) {
+    final allMarks = Map<String, Marker>.from(state.markers);
+    for(int i = 0; i < event.marks.length; i++){
+      final myMark = Marker(
+        markerId: MarkerId('$i'),
+        position: event.marks[i],
+        );
+      allMarks['$i'] = myMark;
     }
-    const double limitMin = 12;
-    const double limitMax = 20;
-    if (initConditionLat > 0.002 || initConditionLon > 0.002){
+    emit(state.copyWith(markers: allMarks));
+  }
 
+  Future<LatLngBounds> getBound() async{
+    LatLngBounds coordinates = await _mapController!.getVisibleRegion();
+    return coordinates;
+  }
+  
 
-      if(event.cameraPosition.zoom > limitMin && event.cameraPosition.zoom < limitMax) {
+  void _onDrawingPolylinesFromZone(DrawPolylinesFromZoneEvent event, Emitter<MapState> emit) {
 
-        // final currentPolylines = Map<String, Polyline>.from(state.polylines);
-        double cosVal = math.cos(math.pi*event.cameraPosition.bearing/180);
-        double sinVal = math.sin(math.pi*event.cameraPosition.bearing/180);
-        double hightSum = 0.011-0.002*(event.cameraPosition.zoom - limitMin); // 0.009 Must convert to global variable , will change acording of a screen
-        double widthSum = 0.008-0.001*(event.cameraPosition.zoom - limitMin); // 0.005 same for this
-        double toLat = hightSum*cosVal - widthSum*sinVal;
-        toLat = toLat > 0 ? -toLat : toLat;
-        double toLon = widthSum*cosVal - hightSum*sinVal;
-        toLon = toLon > 0 ? -toLon : toLon;
+    // if(state.lastCameraPosition.zoom != event.cameraPosition.zoom) {
+    //   changeTild(event.cameraPosition);
+    //   emit(state.copyWith(lastCameraPosition: event.cameraPosition));
+    // }
+    if(true){ // SET CONDITION TO DRAW POLYLINES
 
-        double latMax = event.cameraPosition.target.latitude - toLat;
-        double latMin = event.cameraPosition.target.latitude + toLat;
+      final Map<String, Polyline>currentPolylines = {};
+      List<LatLng> newPointX = [];
+      double p10Compare = 0;
+      int widthLine = 0;
+      for(int i = 0; i < event.points.length/1-1; i++){
         
-        double lonMax = event.cameraPosition.target.longitude - toLon;
-        double lonMin = event.cameraPosition.target.longitude + toLon;
+        double lon1 = event.points[i]['lon_node_1'];
+        double lat1 = event.points[i]['lat_node_1'];
+        double lat2 = event.points[i]['lat_node_2'];
+        double lon2 = event.points[i]['lon_node_2'];
+    
+          newPointX.add(LatLng(lat1, lon1 ));
+
+          p10Compare = event.points[i]['PM10_predicted'] - event.points[i+1]['PM10_predicted'];
+          p10Compare > 0 ? p10Compare : - p10Compare;
+          if(
+            event.points[i]["name"] != event.points[i+1]["name"] ||
+            event.points[i]["lat_node_2"] != event.points[i+1]["lat_node_1"] ||
+            event.points[i]["lon_node_2"] != event.points[i+1]["lon_node_1"] ||
+            p10Compare > 1               
+          ){ //x
 
 
-          // for(int i = 0; i < 5000; i++){
-          List<LatLng> newPointX = [];
-          double p10Compare = 0;
-          int widthLine = 0;
-          for(int i = 0; i < event.points.length/1-1; i++){
-            
-            double lon1 = event.points[i]['lon_node_1'];
-            double lat1 = event.points[i]['lat_node_1'];
-            double lat2 = event.points[i]['lat_node_2'];
-            double lon2 = event.points[i]['lon_node_2'];
-            // double lat1 = double.parse(event.points[i]['lat_node_1']);
-            // double lon1 = double.parse(event.points[i]['lon_node_1']);
-            // double lat2 = double.parse(event.points[i]['lat_node_2']);
-            // double lon2 = double.parse(event.points[i]['lon_node_2']);
-            if (
-              true
-              // lat1 > latMin && lat1 < latMax && lon1 > lonMin && lon1 < lonMax || 
-              // lat2 > latMin && lat2 < latMax && lon2 > lonMin && lon2 < lonMax
-              
-              ){
-              
-              
-              newPointX.add(LatLng(lat1, lon1 ));
-
-              p10Compare = event.points[i]['PM10_predicted'] - event.points[i+1]['PM10_predicted'];
-              p10Compare > 0 ? p10Compare : - p10Compare;
-              if(
-                event.points[i]["name"] != event.points[i+1]["name"] ||
-                event.points[i]["lat_node_2"] != event.points[i+1]["lat_node_1"] ||
-                event.points[i]["lon_node_2"] != event.points[i+1]["lon_node_1"] ||
-                p10Compare > 1               
-              ){ //x
-
-
-                newPointX.add(LatLng(lat2, lon2 ));
-                final Color theColor;
-                if(event.points[i]['PM10_predicted'] < InkaValues.pm10Buena){
-                  theColor = InkaValues.inkaColorBuena;
-                  widthLine = MapPreferences.polylineWidthGood;
-                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Regular){
-                  theColor = InkaValues.inkaColorRegular;
-                  widthLine = MapPreferences.polylineWidthRegular;
-                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Mala){
-                  theColor = InkaValues.inkaColorMala;
-                  widthLine = MapPreferences.polylineWidthBad;
-                } else{
-                  theColor = InkaValues.inkaColorMuyMala;
-                  widthLine = MapPreferences.polylineWidthTooBad;
-                } 
-                final theRoute = Polyline(
-                  polylineId:  PolylineId(event.points[i]['id']),
-                  color: theColor,
-                  // color: Colors.red,
-                  width: widthLine,
-                  startCap: Cap.roundCap,
-                  endCap: Cap.roundCap,
-                  points: newPointX,
-                  geodesic: true,
-                );
-                currentPolylines[event.points[i]['id']] = theRoute;
-                newPointX = [];
-              } //x
-            } else if(newPointX.length >0){
-              
-                newPointX.add(LatLng(lat1, lon1 ));
-                final Color theColor;
-                if(event.points[i]['PM10_predicted'] < InkaValues.pm10Buena){
-                  theColor = InkaValues.inkaColorBuena;
-                  widthLine = 4;
-                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Regular){
-                  theColor = InkaValues.inkaColorRegular;
-                  widthLine = 5;
-                } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Mala){
-                  theColor = InkaValues.inkaColorMala;
-                  widthLine = 6;
-                } else{
-                  theColor = InkaValues.inkaColorMuyMala;
-                  widthLine = 7;
-                } 
-                final theRoute = Polyline(
-                  polylineId:  PolylineId(event.points[i]['id']),
-                  color: theColor,
-                  // color: Colors.red,
-                  width: widthLine,
-                  startCap: Cap.roundCap,
-                  endCap: Cap.roundCap,
-                  points: newPointX,
-                  geodesic: true,
-                );
-                currentPolylines[event.points[i]['id']] = theRoute;
-                newPointX = [];
-            }
-            
-          }
+            newPointX.add(LatLng(lat2, lon2 ));
+            final Color theColor;
+            if(event.points[i]['PM10_predicted'] < InkaValues.pm10Buena){
+              theColor = InkaValues.inkaColorBuena;
+              widthLine = MapPreferences.polylineWidthGood;
+            } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Regular){
+              theColor = InkaValues.inkaColorRegular;
+              widthLine = MapPreferences.polylineWidthRegular;
+            } else if(event.points[i]['PM10_predicted'] < InkaValues.pm10Mala){
+              theColor = InkaValues.inkaColorMala;
+              widthLine = MapPreferences.polylineWidthBad;
+            } else{
+              theColor = InkaValues.inkaColorMuyMala;
+              widthLine = MapPreferences.polylineWidthTooBad;
+            } 
+            final theRoute = Polyline(
+              polylineId:  PolylineId(event.points[i]['id']),
+              color: theColor,
+              // color: Colors.red,
+              width: widthLine,
+              startCap: Cap.roundCap,
+              endCap: Cap.roundCap,
+              points: newPointX,
+              geodesic: true,
+            );
+            currentPolylines[event.points[i]['id']] = theRoute;
+            newPointX = [];
+          } //x
+        
+        
       }
 
-        // currentPolylines['myRoute'] = myRoute;
-        emit(state.copyWith(polylines: currentPolylines));
+
+      // currentPolylines['myRoute'] = myRoute;
+      emit(state.copyWith(polylines: currentPolylines));
     }
+    
   }
 
   void changeTild(CameraPosition cameraPosition){
+    
     double newTild; 
     const double maxZoom = 18.5;
     const double minZoom = 11.5;

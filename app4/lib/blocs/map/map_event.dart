@@ -28,3 +28,8 @@ class DrawPolylinesFromZoneEvent extends MapEvent {
   final List<Map<String,dynamic>> points;
   const DrawPolylinesFromZoneEvent(this.cameraPosition, this.points);
 }
+
+class DrawMarkersFromZoneEvent extends MapEvent {
+  final List<LatLng> marks;
+  const DrawMarkersFromZoneEvent(this.marks);
+}

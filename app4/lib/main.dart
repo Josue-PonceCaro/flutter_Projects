@@ -42,6 +42,7 @@ void main() async {
     BlocProvider(
         create: ((context) =>
             MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context)))),
+    BlocProvider(create: ((context) => SearchBloc())),
   ], child: const MapsApp()));
 }
 
@@ -72,11 +73,8 @@ class MapsApp extends StatelessWidget {
           LoginScreen.pageRoute: (context) => const LoginScreen(),
           RegisterScreen.pageRoute: (context) => const RegisterScreen(),
           SettingsScreen.pageRoute:(context) => const SettingsScreen(),
-          RestorePasswordScreen.pageRoute: (context) =>
-              const RestorePasswordScreen(),
+          RestorePasswordScreen.pageRoute: (context) => const RestorePasswordScreen(),
 
-          Loginx.pageRoute:(context) => const Loginx(),
-          Registerx.pageRoute:(context) => const Registerx(),
           SplashScreen.pageRoute:(context) => const SplashScreen(),
           TileBuilderPage.route:(context) => const TileBuilderPage(),
         },

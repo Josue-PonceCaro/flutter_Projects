@@ -452,24 +452,7 @@ class _SettingsFormState extends State<_SettingsForm> {
           ),
           const _SettingDivider(),
       
-          Container(
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-                    onPressed: settingForm.isLoading ? null : ()  {
-                      Preferences.cleanPreferences();
-                      Navigator.pushReplacementNamed(context, SplashScreen.pageRoute);
-                      // Navigator.pushReplacementNamed(context, WelcomeScreen.pageRoute);
-                      
-                    }, 
-                    style: ButtonStyle(
-                      overlayColor: MaterialStateProperty.all(AppTheme.primaryOrange)
-                    ),
-                    child: const Text('Cerrar sesion', 
-                    style: TextStyle(fontSize: 13, color: AppTheme.primaryOrange),),
-              ),
-          ),
-          const _SettingDivider(height: 1,),
+         
       
           Container(
             width: double.infinity,

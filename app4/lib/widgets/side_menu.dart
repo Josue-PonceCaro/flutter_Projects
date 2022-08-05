@@ -53,7 +53,7 @@ class SideMenu extends StatelessWidget {
               },
               ),
               _TitleFormat(text: 'Configurar perfil', icon: Icons.person, callback: () {
-                
+                Navigator.pushNamed(context, SettingsScreen.pageRoute);
               },
               ),
               const SizedBox(height: 10,),
@@ -63,18 +63,20 @@ class SideMenu extends StatelessWidget {
                 color: AppTheme.gray30,
                 ),
               const SizedBox(height: 10,),
-              _TitleFormat(text: 'Ayuda', icon: Icons.heart_broken, callback: () {
+              _TitleFormat(text: 'Ayuda', icon: Icons.help_outline_sharp, callback: () {
                 
               },
               ),
               
-              _TitleFormat(text: 'Políticas de privacidad', icon: Icons.person, callback: () {
+              _TitleFormat(text: 'Políticas de privacidad', icon: Icons.policy, callback: () {
           
               },
               ),
               const SizedBox(height: 30,),
               BrandingLima(width: size.width),
+              const SizedBox(height: 10,),
               BrandingQaira(width: size.width),
+              const SizedBox(height: 30,),
               Container(
                 width: double.infinity,
                 alignment: Alignment.centerLeft,
@@ -88,8 +90,14 @@ class SideMenu extends StatelessWidget {
                   style: ButtonStyle(
                     overlayColor: MaterialStateProperty.all(AppTheme.primaryOrange)
                   ),
-                  child: const Text('Cerrar sesion', 
-                  style: TextStyle(fontSize: 13, color: AppTheme.primaryOrange),),
+                  child: Row(
+                    children: const  [
+                      Icon(Icons.logout, color: AppTheme.red,),
+                      SizedBox(width: 7,),
+                      Text('Cerrar sesion', 
+                      style: TextStyle(fontSize: 13, color: AppTheme.red),),
+                    ],
+                  ),
                   ),
               ),
             ],
@@ -111,7 +119,7 @@ class _TitleFormat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon),
+      leading: Icon(icon, color: AppTheme.black,),
       title: Text(text, style: const TextStyle(color: AppTheme.black, fontWeight: FontWeight.w800),),
       onTap: callback,
     );

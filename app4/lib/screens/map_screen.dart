@@ -1,4 +1,5 @@
 import 'package:app4/blocs/blocs.dart';
+import 'package:app4/themes/themes.dart';
 import 'package:app4/views/views.dart';
 import 'package:app4/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -72,20 +73,13 @@ class _MapScreenState extends State<MapScreen> {
                       inicialLocation: locationstate.lastKnownLocation!,
                       polylines: mapState.polylines.values.toSet(),
                       onverlay: overlays,
+                      markers: mapState.markers.values.toSet(),
                       ),
                       const SearchBar(),
+                      
                       const ManualMarker(),
-                      Center(
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.list,
-                            size: 40,
-                            ),
-                          onPressed: () {
-                            print('oPen DRAWER....');
-                            _globalKey.currentState?.openDrawer();
-                          }, ),
-                      ),
+
+                      BtnSettings(globalKey: _globalKey),
                     ],
                   ),
                 );
@@ -106,8 +100,6 @@ class _MapScreenState extends State<MapScreen> {
   }
   
 }
-
-
 
 
 

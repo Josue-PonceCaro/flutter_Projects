@@ -1,6 +1,10 @@
+import 'package:app4/models/models.dart';
+import 'package:app4/themes/themes.dart';
 import 'package:flutter/material.dart';
 
-class SearchDestinationDelegate extends SearchDelegate {
+class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
+
+  SearchDestinationDelegate():super(searchFieldLabel: 'Buscar ...');
   @override
   List<Widget>? buildActions(BuildContext context) {
     // TODO: implement buildActions
@@ -17,7 +21,11 @@ class SearchDestinationDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) {
     // TODO: implement buildLeading
-   return IconButton(onPressed: (){close(context, null);}, icon: Icon(Icons.arrow_back));
+   return IconButton(onPressed: (){
+    final result = SearchResult(cancel: true);
+    close(context, result);
+    },
+     icon: Icon(Icons.arrow_back));
   }
 
   @override
@@ -29,7 +37,19 @@ class SearchDestinationDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    return Text('Build Suggestions');
+    return ListView(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.location_on_outlined, color: AppTheme.black,),
+          title: const Text('Colocar la ubicacion manualmente',),
+          onTap: () {
+            final result = SearchResult(cancel: false, manual: true);
+            close(context, result);
+            //TODO: RETURN SOMETHING
+          },
+        ),
+      ]
+    );
   }
 
 }
